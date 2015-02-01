@@ -127,6 +127,7 @@ public class Play extends BasicGameState{
 	int[] badarcherSpeedV = new int[15];
 	//checking for phoenix
 	public int[] baCheckP = new int[15];
+	//makes arrows not change between states
 	public int[] baStaticP = new int[15];
 	
 	//ARROW STUFF
@@ -309,14 +310,14 @@ public class Play extends BasicGameState{
 	//bad tower X
 	public int badTowerHealthX = 1650;
 	//bad tower health
-	public double badTowerHealth = 500;
+	public static double badTowerHealth = 500;
 	//moves good tower red health bar
 	public double goodTowerX = 150;
 	//moves bad tower red health bar
 	public double badTowerX = 150;
 	
 	public double goodTowerMaxHealth = 500;
-	public double badTowerMaxHealth = 500;
+	public static double badTowerMaxHealth = 500;
 	
 	//DAMAGE DELT TO TOWERS
 	public double goodTowerDamage = .05;
@@ -343,6 +344,9 @@ public class Play extends BasicGameState{
 	public boolean pause = false;
 	
 	private UnicodeFont fUnicodeFont;
+	
+	//LEVEL VARIABLE
+	public static int level = 1;
 	@SuppressWarnings("unchecked")
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
         Font font = new Font("Serif", Font.PLAIN, 20);
@@ -1231,6 +1235,10 @@ public class Play extends BasicGameState{
 								fUnicodeFont.drawString(535, 120, "MAP SPEED : " + (int) movingSpeed/7,Color.orange);
 								moveSpeakTime++;
 								}
+								
+								//LEVEL DISPLAY
+								g.setColor(Color.white);
+								g.drawString("Level : " +  level, 8, 30);
 								//HEALTH GOOD TOWER
 								g.setColor(Color.lightGray);
 								g.fillRect( goodTowerHealthX, 50, 150, 30);
@@ -2223,7 +2231,7 @@ public class Play extends BasicGameState{
 									if(baArrayX[x] > playLeftX +600){
 								if(baArrayX[x] < wArrayX[y]+500 && baArrayX[x] > wArrayX[y]-20 || barrowFlight[x] == 1){
 									baCombat[x] = 1;
-									if(barArrayX[x] < wArrayX[y]+25 && barArrayX[x] > wArrayX[y]-25){
+									if(barArrayX[x] < wArrayX[y]+25 && barArrayX[x] > wArrayX[y]-25 && wHealth[y] > 0){
 										if(barArrayY[x] > 400){
 										barArrayX[x] = 2000;
 										barrowFlight[x] = 0;
@@ -2244,7 +2252,7 @@ public class Play extends BasicGameState{
 									if(baArrayX[x] > playLeftX +600){
 							if(baArrayX[x] < aArrayX[y]+500 && baArrayX[x] > aArrayX[y]-20 || barrowFlight[x] == 1){
 								baCombat[x] = 1;
-								if(barArrayX[x] <aArrayX[y]+25 && barArrayX[x] > aArrayX[y]-25){
+								if(barArrayX[x] <aArrayX[y]+25 && barArrayX[x] > aArrayX[y]-25 && aHealth[y] > 0){
 									if(barArrayY[x] > 400){
 									barArrayX[x] = 2000;
 									barrowFlight[x] = 0;
@@ -2263,7 +2271,7 @@ public class Play extends BasicGameState{
 									if(baArrayX[x] > playLeftX +600){
 								if(baArrayX[x] < gArrayX[y]+500 && baArrayX[x] > gArrayX[y]-20 || barrowFlight[x] == 1){
 									baCombat[x] = 1;
-									if(barArrayX[x] < gArrayX[y]+75 && barArrayX[x] > gArrayX[y]-25){
+									if(barArrayX[x] < gArrayX[y]+75 && barArrayX[x] > gArrayX[y]-25 && gHealth[y] > 0){
 										if(barArrayY[x] > 400){
 										barArrayX[x] = 2000;
 										barrowFlight[x] = 0;
@@ -2282,7 +2290,7 @@ public class Play extends BasicGameState{
 									if(baArrayX[x] > playLeftX +600){
 								if(baArrayX[x] < cArrayX[y]+600 && baArrayX[x] > cArrayX[y]-50 || barrowFlight[x] == 1){
 									baCombat[x] = 1;
-									if(barArrayX[x] < cArrayX[y]+300 && barArrayX[x] > cArrayX[y]-25){
+									if(barArrayX[x] < cArrayX[y]+300 && barArrayX[x] > cArrayX[y]-25 && cHealth[y] > 0){
 										if(barArrayY[x] > 400){
 										barArrayX[x] = 2000;
 										barrowFlight[x] = 0;
@@ -2301,11 +2309,12 @@ public class Play extends BasicGameState{
 									if(baArrayX[x] > playLeftX +600){
 							if(baArrayX[x] < pArrayX[y]+560 && baArrayX[x] > pArrayX[y]-50 || barrowFlight[x] == 1){
 								baCombat[x] = 1;
-								if(barArrayX[x] <pArrayX[y]+25 && barArrayX[x] > pArrayX[y]-25){
+								if(barArrayX[x] <pArrayX[y]+65 && barArrayX[x] > pArrayX[y]-25 && pHealth[y] > 0){
 									if(barArrayY[x] < 300){
 									barArrayX[x] = 2000;
 									barrowFlight[x] = 0;
 									baCombatAnimation[x] = 0;
+									baStaticP[x] = 0;
 									pHealth[y] -=badmg;
 									if(pHealth[y] <=0){
 										baCombat[x] = 0;
@@ -2316,7 +2325,15 @@ public class Play extends BasicGameState{
 									}
 									}
 								}
-								
+								//CHECKING TO SEE IF PHOENIX IS AROUND
+								for(int y = 0; y < 15; y ++){
+									if(barrowFlight[x] == 0){
+									if(baArrayX[x] < pArrayX[y]+560 && baArrayX[x] > pArrayX[y]-50 && pHealth[y] > 0){
+										baCheckP[x]++;
+										baStaticP[x] = 1;
+								}
+									}
+								}	
 							if(baCombat[x] == 1){
 								if(baCombatAnimation[x] <=0 && barrowFlight[x] == 0){
 								baCombatAnimation[x] = 25;
@@ -2337,52 +2354,30 @@ public class Play extends BasicGameState{
 									if(barArrayX[x] > playLeftX && barArrayX[x] < playRightX+1200){
 									barrowFlight[x] = 1;
 									}
-									for(int y = 0; y < 15; y ++){
-										if(baArrayX[x] < pArrayX[y]+560 && baArrayX[x] > pArrayX[y]-50 && pHealth[x] > 0){
-											baCheckP[x]++;
-											baStaticP[x] = 1;
-									}
-									}
-									if(baCheckP[x] > 0){
-										baCheckP[x] = 0;
+									if(baStaticP[x] == 1){
 										g.drawImage(bapicArray3[x], (float) baArrayX[x], 460);
 									}else{
 										g.drawImage(bapicArray[x], (float) baArrayX[x], 460);
 									}
 								}else{
-									for(int y = 0; y < 15; y ++){
-										if(baArrayX[x] < pArrayX[y]+560 && baArrayX[x] > pArrayX[y]-50 && pHealth[x] > 0){
-											baCheckP[x]++;
-											baStaticP[x] = 1;
-									}
-									}
-	
-									if(baCheckP[x] > 0){
-										baCheckP[x] = 0;
+									if(baStaticP[x] == 1){
 									g.drawImage(bapicArray4[x], (float) baArrayX[x], 460);
 									}else{
 									g.drawImage(bapicArray2[x], (float) baArrayX[x], 460);
 									}
 								}
 								if(barrowFlight[x] == 1){
-									for(int y = 0; y < 15; y ++){
-										if(baArrayX[x] < pArrayX[y]+560 && baArrayX[x] > pArrayX[y]-50 && pHealth[x] > 0){
-											baCheckP[x]++;
-											baStaticP[x] = 1;
-									}
-									}
 									if(baStaticP[x]  == 0){
 										barArrayY[x] = 530;
 									}
-									if(baCheckP[x] > 0 || baStaticP[x] == 1){
-										baCheckP[x] = 0;
+									if(baArrayX[x] > playLeftX + 620 && baStaticP[x] == 1){
 										g.drawImage(barpicArray2[x], barArrayX[x], barArrayY[x]);
 										barArrayY[x] -=3;
 										if(barArrayY[x] < -100 && barArrayY[x] > -150){
+											baStaticP[x] = 0;
 											barArrayX[x] = 2000;
 											barrowFlight[x] = 0;
 											baCombatAnimation[x] = 0;
-											baStaticP[x]=0;
 										}
 									}else{
 										g.drawImage(barpicArray[x], barArrayX[x], barArrayY[x]);
@@ -2390,12 +2385,7 @@ public class Play extends BasicGameState{
 								barArrayX[x]-=barSpeed;
 								}
 								if(baCombatAnimation[x] == 2){
-									for(int y = 0; y < 15; y ++){
-										if(baArrayX[x] < pArrayX[y]+560 && baArrayX[x] > pArrayX[y]-50 && pHealth[x] > 0){
-											baCheckP[x]++;
-									}
-									}
-									if(baCheckP[x] >=0){
+									if(baStaticP[x] == 1){
 									barArrayX[x] = (int) (baArrayX[x]-30);
 									barArrayY[x] = 430;
 									}else{
@@ -2408,8 +2398,11 @@ public class Play extends BasicGameState{
 									baCombatAnimation[x]--;
 								}
 							}
+							
+							baCheckP[x] = 0;
+							
 						}
-						
+
 						if(bacdr == 0){
 							int vvv = 0;
 							for(int x = 0; x < 15; x++){
@@ -2423,7 +2416,6 @@ public class Play extends BasicGameState{
 									baCombatAnimation[x] = 0;
 									barrowFlight[x] = 0;
 									bacdr = baMaxcdr;
-									baCheckP[x] = 0;
 									baStaticP[x] = 0;
 									vvv = 1;
 								}
@@ -3077,7 +3069,7 @@ public class Play extends BasicGameState{
 					baCombat[x] = 0;
 					baCombatAnimation[x] = 0;
 					barrowFlight[x] = 0;
-					
+					baStaticP[x] = 0;
 					badgArrayX[x] = 1450;
 					badgHealth[x] = 0;
 					badgAlive[x] = 0;
@@ -3125,8 +3117,6 @@ public class Play extends BasicGameState{
 				mana = 0;
 				
 				//BAD GUY ADDITIONS
-				badTowerMaxHealth +=250;
-				badTowerHealth = badTowerMaxHealth;
 				
 				badwdmg +=.02;
 				badwMaxHealth +=10;

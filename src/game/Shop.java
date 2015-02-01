@@ -174,18 +174,19 @@ public class Shop extends BasicGameState{
 		int mouseX = Mouse.getX();
 		int mouseY = gc.getHeight()-Mouse.getY();
 		
-		//START BUTTON
 		//625
 		//340
-		if(mouseX >= begin.toPixelsX(88) && mouseX <= begin.toPixelsX(112)){
-			if(mouseY >=begin.toPixelsY(162) && mouseY <= begin.toPixelsY(187)){
-				if(input.isMouseButtonDown(0)){
-				setVariables();
-				sbg.enterState(1);
+		
+		if(shopSleep == 0){
+			//START BUTTON
+			if(mouseX >= begin.toPixelsX(88) && mouseX <= begin.toPixelsX(112)){
+				if(mouseY >=begin.toPixelsY(162) && mouseY <= begin.toPixelsY(187)){
+					if(input.isMouseButtonDown(0)){
+						setVariables();
+					sbg.enterState(1);
+					}
 				}
 			}
-		}
-		if(shopSleep == 0){
 			if(input.isMouseButtonDown(0)){
 			shopSleep = 25;
 			}
@@ -413,7 +414,11 @@ public class Shop extends BasicGameState{
 	
 	public void setVariables(){
 		
+		Play.badTowerMaxHealth +=250;
+		Play.badTowerHealth = Play.badTowerMaxHealth;
+		
 		Play.coins = coins;
+		
 		Play.wSpeed = wSpeed;
 		Play.aSpeed = aSpeed;
 		Play.gSpeed = gSpeed;
@@ -433,6 +438,8 @@ public class Shop extends BasicGameState{
 		Play.pMaxHealth = pMaxHealth;
 		
 		Play.playState = true;
+		
+		Play.level++;
 	}
 
 }
