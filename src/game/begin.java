@@ -36,7 +36,7 @@ public class begin extends StateBasedGame{
 		
 	}
 	
-	public static void main(String[] args) throws LWJGLException{
+	public static void main(String[] args) throws LWJGLException{		
 		try{
 			appgc = new AppGameContainer(new ScalableGame(new begin(gamename), DEFAULT_WIDTH, DEFAULT_HEIGHT, false));
 			appgc.setDisplayMode(1250, 680, false);
@@ -46,6 +46,7 @@ public class begin extends StateBasedGame{
 		}catch(SlickException e){
 			e.printStackTrace();
 		}
+		
 	}
 	
 	public static void resize(int width, int height, boolean fullScreen){

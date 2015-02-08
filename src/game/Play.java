@@ -80,8 +80,12 @@ public class Play extends BasicGameState{
 	//GOOD ARCHER STUFF
 	Image a0, a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14;
 	Image a02,a120,a22,a32,a42,a52,a62,a72,a82,a92,a1000,a1100,a1200,a1300,a1400;
+	Image a002,a0120,a022,a032,a042,a052,a062,a072,a082,a092,a01000,a01100,a01200,a01300,a01400;
+	Image a0002,a00120,a0022,a0032,a0042,a0052,a0062,a0072,a0082,a0092,a001000,a001100,a001200,a001300,a001400;
 	Image [] apicArray = new Image[15];
 	Image [] apicArray2 = new Image[15];
+	Image [] apicArray3 = new Image[15];
+	Image [] apicArray4 = new Image[15];
 	double[] aArrayX = new double[15];
 	int[] aHealth = new int[15];
 	int[] aAlive = new int[15];
@@ -92,16 +96,23 @@ public class Play extends BasicGameState{
 	int aMaxCdr = 30;
 	public static int admg = 75;
 	public static int aMaxHealth = 500;
+	int[] archerSpeedV = new int[15];
+	//checking for phoenix
+	public int[] aCheckP = new int[15];
+	//makes arrows not change between states
+	public int[] aStaticP = new int[15];
 	
 	int aDmgCost = 300;
 	int aHealthCost = 100;
 	int aSpeedCost = 250;
-	int[] archerSpeedV = new int[15];
 	
 	//ARROW STUFF
 	Image ar0,ar1,ar2,ar3,ar4,ar5,ar6,ar7,ar8,ar9,ar10,ar11,ar12,ar13,ar14;
+	Image ar00,ar01,ar02,ar03,ar04,ar05,ar06,ar07,ar08,ar09,ar010,ar011,ar012,ar013,ar014;
 	Image [] arpicArray = new Image[15];
+	Image [] arpicArray2 = new Image[15];
 	int[] arArrayX = new int[15];
+	int[] arArrayY = new int[15];
 	int[] arrowFlight = new int[15];
 	double arSpeed =4;
 	
@@ -262,7 +273,7 @@ public class Play extends BasicGameState{
 			int pcdr;
 			int pMaxCdr = 30;
 			public static int pdmg = 150;
-			public static int pMaxHealth = 100;
+			public static int pMaxHealth = 400;
 			
 			int pDmgCost = 300;
 			int pHealthCost = 100;
@@ -287,11 +298,11 @@ public class Play extends BasicGameState{
 			int[] bpAlive = new int[15];
 			int[] bpCombat = new int[15];
 			int[] bpCombatAnimation = new int[15];
-			public static double bpSpeed = 1.5;
+			public double bpSpeed = 1.5;
 			int bpcdr;
-			int bpMaxCdr = 30;
-			public static int bpdmg = 15;
-			public static int bpMaxHealth = 100;
+			int bpMaxCdr = 300;
+			public int bpdmg = 15;
+			public int bpMaxHealth = 400;
 			
 			int bpDmgCost = 300;
 			int bpHealthCost = 100;
@@ -300,11 +311,18 @@ public class Play extends BasicGameState{
 			
 			//FIREBALL STUFF
 			Image bpr0,bpr1,bpr2,bpr3,bpr4,bpr5,bpr6,bpr7,bpr8,bpr9,bpr10,bpr11,bpr12,bpr13,bpr14;
+			Image bpr00,bpr01,bpr02,bpr03,bpr04,bpr05,bpr06,bpr07,bpr08,bpr09,bpr010,bpr011,bpr012,bpr013,bpr014;
 			Image [] bprpicArray = new Image[15];
+			Image [] bprpicArray2 = new Image[15];
 			int[] bprArrayX = new int[15];
 			int[] bprArrayY = new int[15];
 			int[] bpFlight = new int[15];
 			double bprSpeed =4;
+			//checking for phoenix
+			public int[] bpCheckP = new int[15];
+			//makes arrows not change between states
+			public int[] bpStaticP = new int[15];
+			
 			
 	//IMAGE ICONS
 	Image wIcon;
@@ -565,6 +583,38 @@ public class Play extends BasicGameState{
 				a1300 = new Image("res/archer2.png");
 				a1400 = new Image("res/archer2.png");
 				
+				a002 = new Image("res/archer3.png");
+				a0120 = new Image("res/archer3.png");
+				a022 = new Image("res/archer3.png");
+				a032 = new Image("res/archer3.png");
+				a042 = new Image("res/archer3.png");
+				a052 = new Image("res/archer3.png");
+				a062 = new Image("res/archer3.png");
+				a072 = new Image("res/archer3.png");
+				a082 = new Image("res/archer3.png");
+				a092 = new Image("res/archer3.png");
+				a01000 = new Image("res/archer3.png");
+				a01100 = new Image("res/archer3.png");
+				a01200 = new Image("res/archer3.png");
+				a01300 = new Image("res/archer3.png");
+				a01400 = new Image("res/archer3.png");
+				
+				a0002 = new Image("res/archer4.png");
+				a00120 = new Image("res/archer4.png");
+				a0022 = new Image("res/archer4.png");
+				a0032 = new Image("res/archer4.png");
+				a0042 = new Image("res/archer4.png");
+				a0052 = new Image("res/archer4.png");
+				a0062 = new Image("res/archer4.png");
+				a0072 = new Image("res/archer4.png");
+				a0082 = new Image("res/archer4.png");
+				a0092 = new Image("res/archer4.png");
+				a001000 = new Image("res/archer4.png");
+				a001100 = new Image("res/archer4.png");
+				a001200 = new Image("res/archer4.png");
+				a001300 = new Image("res/archer4.png");
+				a001400 = new Image("res/archer4.png");
+				
 				ar0 = new Image("res/arrow.png");
 				ar1 = new Image("res/arrow.png");
 				ar2 = new Image("res/arrow.png");
@@ -580,6 +630,22 @@ public class Play extends BasicGameState{
 				ar12 = new Image("res/arrow.png");
 				ar13 = new Image("res/arrow.png");
 				ar14 = new Image("res/arrow.png");
+				
+				ar00 = new Image("res/arrow2.png");
+				ar01 = new Image("res/arrow2.png");
+				ar02 = new Image("res/arrow2.png");
+				ar03 = new Image("res/arrow2.png");
+				ar04 = new Image("res/arrow2.png");
+				ar05 = new Image("res/arrow2.png");
+				ar06 = new Image("res/arrow2.png");
+				ar07 = new Image("res/arrow2.png");
+				ar08 = new Image("res/arrow2.png");
+				ar09 = new Image("res/arrow2.png");
+				ar010 = new Image("res/arrow2.png");
+				ar011 = new Image("res/arrow2.png");
+				ar012 = new Image("res/arrow2.png");
+				ar013 = new Image("res/arrow2.png");
+				ar014 = new Image("res/arrow2.png");
 				
 					apicArray[0] = a0;
 					apicArray[1] = a1;
@@ -613,6 +679,38 @@ public class Play extends BasicGameState{
 					apicArray2[13] = a1300;
 					apicArray2[14] = a1400;
 					
+					apicArray3[0] = a002;
+					apicArray3[1] = a0120;
+					apicArray3[2] = a022;
+					apicArray3[3] = a032;
+					apicArray3[4] = a042;
+					apicArray3[5] = a052;
+					apicArray3[6] = a062;
+					apicArray3[7] = a072;
+					apicArray3[8] = a082;
+					apicArray3[9] = a092;
+					apicArray3[10] = a01000;
+					apicArray3[11] = a01100;
+					apicArray3[12] = a01200;
+					apicArray3[13] = a01300;
+					apicArray3[14] = a01400;
+					
+					apicArray4[0] = a0002;
+					apicArray4[1] = a00120;
+					apicArray4[2] = a0022;
+					apicArray4[3] = a0032;
+					apicArray4[4] = a0042;
+					apicArray4[5] = a0052;
+					apicArray4[6] = a0062;
+					apicArray4[7] = a0072;
+					apicArray4[8] = a0082;
+					apicArray4[9] = a0092;
+					apicArray4[10] = a001000;
+					apicArray4[11] = a001100;
+					apicArray4[12] = a001200;
+					apicArray4[13] = a001300;
+					apicArray4[14] = a001400;
+					
 					arpicArray[0] = ar0;
 					arpicArray[1] = ar1;
 					arpicArray[2] = ar2;
@@ -628,6 +726,22 @@ public class Play extends BasicGameState{
 					arpicArray[12] = ar12;
 					arpicArray[13] = ar13;
 					arpicArray[14] = ar14;
+					
+					arpicArray2[0] = ar00;
+					arpicArray2[1] = ar01;
+					arpicArray2[2] = ar02;
+					arpicArray2[3] = ar03;
+					arpicArray2[4] = ar04;
+					arpicArray2[5] = ar05;
+					arpicArray2[6] = ar06;
+					arpicArray2[7] = ar07;
+					arpicArray2[8] = ar08;
+					arpicArray2[9] = ar09;	
+					arpicArray2[10] = ar010;
+					arpicArray2[11] = ar011;
+					arpicArray2[12] = ar012;
+					arpicArray2[13] = ar013;
+					arpicArray2[14] = ar014;
 					
 					//BAD ARCHER STUFF
 					
@@ -1298,6 +1412,22 @@ public class Play extends BasicGameState{
 									bpr13 = new Image("res/badphoenixammo.png");
 									bpr14 = new Image("res/badphoenixammo.png");
 									
+									bpr00 = new Image("res/badphoenixammo2.png");
+									bpr01 = new Image("res/badphoenixammo2.png");
+									bpr02 = new Image("res/badphoenixammo2.png");
+									bpr03 = new Image("res/badphoenixammo2.png");
+									bpr04 = new Image("res/badphoenixammo2.png");
+									bpr05 = new Image("res/badphoenixammo2.png");
+									bpr06 = new Image("res/badphoenixammo2.png");
+									bpr07 = new Image("res/badphoenixammo2.png");
+									bpr08 = new Image("res/badphoenixammo2.png");
+									bpr09 = new Image("res/badphoenixammo2.png");
+									bpr010 = new Image("res/badphoenixammo2.png");
+									bpr011 = new Image("res/badphoenixammo2.png");
+									bpr012 = new Image("res/badphoenixammo2.png");
+									bpr013 = new Image("res/badphoenixammo2.png");
+									bpr014 = new Image("res/badphoenixammo2.png");
+									
 										bppicArray[0] = bp0;
 										bppicArray[1] = bp1;
 										bppicArray[2] = bp2;
@@ -1345,6 +1475,22 @@ public class Play extends BasicGameState{
 										bprpicArray[12] = bpr12;
 										bprpicArray[13] = bpr13;
 										bprpicArray[14] = bpr14;
+										
+										bprpicArray2[0] = bpr00;
+										bprpicArray2[1] = bpr01;
+										bprpicArray2[2] = bpr02;
+										bprpicArray2[3] = bpr03;
+										bprpicArray2[4] = bpr04;
+										bprpicArray2[5] = bpr05;
+										bprpicArray2[6] = bpr06;
+										bprpicArray2[7] = bpr07;
+										bprpicArray2[8] = bpr08;
+										bprpicArray2[9] = bpr09;	
+										bprpicArray2[10] = bpr010;
+										bprpicArray2[11] = bpr011;
+										bprpicArray2[12] = bpr012;
+										bprpicArray2[13] = bpr013;
+										bprpicArray2[14] = bpr014;
 									
 									
 								//PAUSING GAME
@@ -1395,7 +1541,7 @@ public class Play extends BasicGameState{
 											cAlive[x] = 1;
 										for(int y = 0; y < 15; y++){
 											if(cArrayX[x] < playRightX +750){
-										if(cArrayX[x] > badwArrayX[y]-900+x*3 && cArrayX[x] < badwArrayX[y]-400){
+										if(cArrayX[x] > badwArrayX[y]-900+x*3 && cArrayX[x] < badwArrayX[y]-400 || catapultFlight[x] == 1){
 											
 											if(cArrayX[x] > badwArrayX[y]-900 && idX[x] == 0){
 												gravity[x] = 1.9;
@@ -1429,7 +1575,7 @@ public class Play extends BasicGameState{
 										}
 										for(int y = 0; y < 15; y++){
 											if(cArrayX[x] < playRightX +750){
-									if(cArrayX[x] > baArrayX[y]-900+x*3 && cArrayX[x] < baArrayX[y]-400){
+									if(cArrayX[x] > baArrayX[y]-900+x*3 && cArrayX[x] < baArrayX[y]-400 || catapultFlight[x] == 1){
 										
 										if(cArrayX[x] > baArrayX[y]-900 && idX[x] == 0){
 											gravity[x] = 1.9;
@@ -1461,7 +1607,7 @@ public class Play extends BasicGameState{
 										}
 										for(int y = 0; y < 15; y++){
 											if(cArrayX[x] < playRightX +750){
-										if(cArrayX[x] > badgArrayX[y]-900+x*3 && cArrayX[x] < badgArrayX[y]-400){
+										if(cArrayX[x] > badgArrayX[y]-900+x*3 && cArrayX[x] < badgArrayX[y]-400 || catapultFlight[x] == 1){
 											
 											if(cArrayX[x] > badgArrayX[y]-900 && idX[x] == 0){
 												gravity[x] = 1.9;
@@ -1493,7 +1639,7 @@ public class Play extends BasicGameState{
 										}
 										for(int y = 0; y < 15; y++){
 											if(cArrayX[x] < playRightX +750){
-										if(cArrayX[x] > bcArrayX[y]-900+x*3 && cArrayX[x] < bcArrayX[y]-400){
+										if(cArrayX[x] > bcArrayX[y]-900+x*3 && cArrayX[x] < bcArrayX[y]-400 || catapultFlight[x] == 1){
 											
 											if(cArrayX[x] > bcArrayX[y]-900 && idX[x] == 0){
 												gravity[x] = 1.9;
@@ -1514,6 +1660,38 @@ public class Play extends BasicGameState{
 											bcHealth[y] -=cdmg;
 											if(bcHealth[y] <=0){
 												bcArrayX[y] = playRightX + 2500;
+												coins +=5;
+												mana+=5;
+												cCombat[x] = 0;
+											}
+											}
+										}
+										}
+											}
+										}
+										for(int y = 0; y < 15; y++){
+											if(cArrayX[x] < playRightX +750){
+										if(cArrayX[x] > bpArrayX[y]-800+x*3 && cArrayX[x] < bpArrayX[y]-400 || catapultFlight[x] == 1){
+											
+											if(cArrayX[x] > bpArrayX[y]-900 && idX[x] == 0){
+												gravity[x] = 2.55;
+											}else if(cArrayX[x] > bpArrayX[y]-800 && idX[x] == 0){
+												gravity[x] = 2.55;	
+											}else if(cArrayX[x] > bpArrayX[y]-700 && idX[x] == 0){
+												gravity[x] = 2.55;
+											}else if(cArrayX[x] > bpArrayX[y]-600 && idX[x] == 0){
+												gravity[x] = 2.55;
+											}
+											
+											cCombat[x] = 1;
+											if(caArrayX[x] > bpArrayX[y]-50 && caArrayX[x] < bpArrayX[y]+75){
+												if(caArrayY[x] < 250){
+												caArrayX[x] = -100;
+												catapultFlight[x] = 0;
+												cCombatAnimation[x] = 0;
+											bpHealth[y] -=cdmg;
+											if(bpHealth[y] <=0){
+												bpArrayX[y] = playRightX + 2500;
 												coins +=5;
 												mana+=5;
 												cCombat[x] = 0;
@@ -2051,7 +2229,8 @@ public class Play extends BasicGameState{
 											if(aArrayX[x] < playRightX +750){
 										if(aArrayX[x] > badwArrayX[y]-500 && aArrayX[x] < badwArrayX[y]+20 || arrowFlight[x] == 1){
 											aCombat[x] = 1;
-											if(arArrayX[x] > badwArrayX[y]-15 && arArrayX[x] < badwArrayX[y]+15){
+											if(arArrayX[x] > badwArrayX[y]-15 && arArrayX[x] < badwArrayX[y]+15 && badwHealth[y] > 0){
+												if(arArrayY[x] > 400){
 												arArrayX[x] = -100;
 												arrowFlight[x] = 0;
 												aCombatAnimation[x] = 0;
@@ -2063,6 +2242,7 @@ public class Play extends BasicGameState{
 												badwArrayX[y]= playRightX +2500;
 											}
 											}
+											}
 										}
 											}else{
 												aCombat[x] = 1;
@@ -2072,7 +2252,8 @@ public class Play extends BasicGameState{
 											if(aArrayX[x] < playRightX +750){
 									if(aArrayX[x] > baArrayX[y]-500 && aArrayX[x] < baArrayX[y]+20 || arrowFlight[x] == 1){
 										aCombat[x] = 1;
-										if(arArrayX[x] > baArrayX[y]-15 && arArrayX[x] < baArrayX[y]+15){
+										if(arArrayX[x] > baArrayX[y]-15 && arArrayX[x] < baArrayX[y]+15 && baHealth[y] > 0){
+											if(arArrayY[x] > 400){
 											arArrayX[x] = -100;
 											arrowFlight[x] = 0;
 											aCombatAnimation[x] = 0;
@@ -2084,6 +2265,7 @@ public class Play extends BasicGameState{
 												baArrayX[y]= playRightX +2500;
 											}
 										}
+										}
 											}
 											}
 										}
@@ -2091,7 +2273,8 @@ public class Play extends BasicGameState{
 											if(aArrayX[x] < playRightX +750){
 										if(aArrayX[x] > badgArrayX[y]-500 && aArrayX[x] < badgArrayX[y]+20 || arrowFlight[x] == 1){
 											aCombat[x] = 1;
-											if(arArrayX[x] > badgArrayX[y]-15 && arArrayX[x] < badgArrayX[y]+15){
+											if(arArrayX[x] > badgArrayX[y]-15 && arArrayX[x] < badgArrayX[y]+15 && badgHealth[y] > 0){
+												if(arArrayY[x] > 400){
 												arArrayX[x] = -100;
 												arrowFlight[x] = 0;
 												aCombatAnimation[x] = 0;
@@ -2106,11 +2289,13 @@ public class Play extends BasicGameState{
 										}
 											}
 										}
+										}
 										for(int y = 0; y < 15; y++){
 											if(aArrayX[x] < playRightX +750){
-										if(aArrayX[x] > bcArrayX[y]-600 && aArrayX[x] < bcArrayX[y]+20 || arrowFlight[x] == 1){
+										if(aArrayX[x] > bcArrayX[y]-500 && aArrayX[x] < bcArrayX[y]+20 || arrowFlight[x] == 1){
 											aCombat[x] = 1;
-											if(arArrayX[x] > bcArrayX[y]-300 && arArrayX[x] < bcArrayX[y]+15){
+											if(arArrayX[x] > bcArrayX[y]-300 && arArrayX[x] < bcArrayX[y]+15 && bcHealth[y] > 0){
+												if(arArrayY[x] > 400){
 												arArrayX[x] = -100;
 												arrowFlight[x] = 0;
 												aCombatAnimation[x] = 0;
@@ -2123,44 +2308,103 @@ public class Play extends BasicGameState{
 											}
 											}
 										}
+										}
 											}
 										}
-									if(aCombat[x] == 1){
-										if(aCombatAnimation[x] <=0 && arrowFlight[x] == 0){
-										aCombatAnimation[x] = 35;
-										}
-									}else{
-										if(archerSpeedV[x] <=0){
-											archerSpeedV[x] = 1;
-										aArrayX[x]+=aSpeed;
-										}else{
-											archerSpeedV[x]--;
-										}
-									}
-									}else{
-										g.drawImage(apicArray[x], (float) (aArrayX[x]-3000), 2000);
-									}
-									if(aAlive[x] == 1){
-										if(aCombatAnimation[x] == 1){
-											if(arArrayX[x] > playLeftX && arArrayX[x] < playRightX+550){
-											arrowFlight[x] = 1;
+										for(int y = 0; y < 15; y++){
+											if(aArrayX[x] < playRightX +750){
+									if(aArrayX[x] > bpArrayX[y]-550 && aArrayX[x] < bpArrayX[y]-50 || arrowFlight[x] == 1){
+										aCombat[x] = 1;
+										if(arArrayX[x] > bpArrayX[y]-65 && arArrayX[x] < bpArrayX[y]+25 && bpHealth[y] > 0){
+											if(arArrayY[x] < 300){
+											arArrayX[x] = 2000;
+											arrowFlight[x] = 0;
+											aCombatAnimation[x] = 0;
+											aStaticP[x] = 0;
+											bpHealth[y] -=admg;
+											if(bpHealth[y] <=0){
+												aCombat[x] = 0;
+												bpArrayX[y]= playLeftX + 250;
 											}
-									g.drawImage(apicArray[x], (float) aArrayX[x], 520);
+										}
+										}
+											}
+											}
+										}
+										//CHECKING TO SEE IF BAD PHOENIX IS AROUND
+										for(int y = 0; y < 15; y ++){
+											if(arrowFlight[x] == 0){
+											if(aArrayX[x] >= bpArrayX[y]-550 && aArrayX[x] < bpArrayX[y]-50 && bpHealth[y] > 0){
+												aCheckP[x]++;
+												aStaticP[x] = 1;
+										}
+											}
+										}	
+										if(aCombat[x] == 1){
+											if(aCombatAnimation[x] <=0 && arrowFlight[x] == 0){
+											aCombatAnimation[x] = 35;
+											}
 										}else{
-											g.drawImage(apicArray2[x], (float) aArrayX[x], 520);
+											if(archerSpeedV[x] <=0){
+											aArrayX[x]+=aSpeed;
+											archerSpeedV[x]=1;
+											}else{
+												archerSpeedV[x]--;
+											}
 										}
-										if(arrowFlight[x] == 1){
-										g.drawImage(arpicArray[x], arArrayX[x], 575);
-										arArrayX[x]+=arSpeed;
+										}else{
+											g.drawImage(apicArray[x], (float) (aArrayX[x]-3000), 2000);
 										}
-										if(aCombatAnimation[x] == 2){
-											arArrayX[x] = (int) (aArrayX[x]+90);
-										}
+										if(aAlive[x] == 1){
+											if(aCombatAnimation[x] == 1){
+												if(arArrayX[x] < playRightX+750 && arArrayX[x] > playLeftX){
+												arrowFlight[x] = 1;
+												}
+												if(aStaticP[x] == 1){
+													g.drawImage(apicArray3[x], (float) aArrayX[x], 520);
+												}else{
+													g.drawImage(apicArray[x], (float) aArrayX[x], 520);
+												}
+											}else{
+												if(aStaticP[x] == 1){
+												g.drawImage(apicArray4[x], (float) aArrayX[x], 520);
+												}else{
+												g.drawImage(apicArray2[x], (float) aArrayX[x], 520);
+												}
+											}
+											if(arrowFlight[x] == 1){
+												if(aStaticP[x]  == 0){
+													arArrayY[x] = 575;
+												}
+												if(aArrayX[x] < playRightX + 750 && aStaticP[x] == 1){
+													g.drawImage(arpicArray2[x], arArrayX[x], arArrayY[x]);
+													arArrayY[x] -=3;
+													if(arArrayY[x] < -100 && arArrayY[x] > -150){
+														aStaticP[x] = 0;
+														arArrayX[x] = 2000;
+														arrowFlight[x] = 0;
+														aCombatAnimation[x] = 0;
+													}
+												}else{
+													g.drawImage(arpicArray[x], arArrayX[x], arArrayY[x]);
+												}
+											arArrayX[x]+=arSpeed;
+											}
+											if(aCombatAnimation[x] == 2){
+												if(aStaticP[x] == 1){
+												arArrayX[x] = (int) (aArrayX[x]+85);
+												arArrayY[x] = 480;
+												}else{
+												arArrayX[x] = (int) (aArrayX[x]+115);
+												arArrayY[x] = 575;
+												}
+											}
 										aAlive[x] = 0;
 										if(aCombatAnimation[x] > 0 && arrowFlight[x] == 0){
 											aCombatAnimation[x]--;
 										}
 									}
+										aCheckP[x] = 0;
 								}
 								
 								if(acdr > 0){
@@ -2744,45 +2988,46 @@ public class Play extends BasicGameState{
 						for(int x = 0; x < 15; x++){
 							if(bpHealth[x] >0){
 								if(bprArrayX[x] < playLeftX+350){
-									goodTowerDamage-=badTowerDamage*20;
+									goodTowerHealth-=badTowerDamage*20;
 									bprArrayX[x] = -100;
 									bpFlight[x] = 0;
 									bpCombatAnimation[x] = 0;
+									bpStaticP[x] = 0;
 								}
 								bpAlive[x] = 1;
 								for(int y = 0; y < 15; y++){
 									if(bpArrayX[x] > playLeftX +600){
-								if(baArrayX[x] < wArrayX[y]+500 && baArrayX[x] > wArrayX[y]-20 || barrowFlight[x] == 1){
-									baCombat[x] = 1;
-									if(barArrayX[x] < wArrayX[y]+25 && barArrayX[x] > wArrayX[y]-25 && wHealth[y] > 0){
-										if(barArrayY[x] > 400){
-										barArrayX[x] = 2000;
-										barrowFlight[x] = 0;
-										baCombatAnimation[x] = 0;
-									wHealth[y] -=badmg;
+								if(bpArrayX[x] < wArrayX[y]+500 && bpArrayX[x] > wArrayX[y]-20 || bpFlight[x] == 1){
+									bpCombat[x] = 1;
+									if(bprArrayX[x] < wArrayX[y]+25 && bprArrayX[x] > wArrayX[y]-25 && wHealth[y] > 0){
+										if(bprArrayY[x] > 500){
+										bprArrayX[x] = 2000;
+										bpFlight[x] = 0;
+										bpCombatAnimation[x] = 0;
+									wHealth[y] -=bpdmg;
 									if(wHealth[y] <=0){
-										baCombat[x] = 0;
+										bpCombat[x] = 0;
 										wArrayX[y]= playLeftX +250;
 									}
 										}
 									}
 								}
 									}else{
-										baCombat[x] = 1;
+										bpCombat[x] = 1;
 									}
 								}
 								for(int y = 0; y < 15; y++){
-									if(baArrayX[x] > playLeftX +600){
-							if(baArrayX[x] < aArrayX[y]+500 && baArrayX[x] > aArrayX[y]-20 || barrowFlight[x] == 1){
-								baCombat[x] = 1;
-								if(barArrayX[x] <aArrayX[y]+25 && barArrayX[x] > aArrayX[y]-25 && aHealth[y] > 0){
-									if(barArrayY[x] > 400){
-									barArrayX[x] = 2000;
-									barrowFlight[x] = 0;
-									baCombatAnimation[x] = 0;
-									aHealth[y] -=badmg;
+									if(bpArrayX[x] > playLeftX +600){
+							if(bpArrayX[x] < aArrayX[y]+500 && bpArrayX[x] > aArrayX[y]-20 || bpFlight[x] == 1){
+								bpCombat[x] = 1;
+								if(bprArrayX[x] <aArrayX[y]+25 && bprArrayX[x] > aArrayX[y]-25 && aHealth[y] > 0){
+									if(bprArrayY[x] > 500){
+									bprArrayX[x] = 2000;
+									bpFlight[x] = 0;
+									bpCombatAnimation[x] = 0;
+									aHealth[y] -=bpdmg;
 									if(aHealth[y] <=0){
-										baCombat[x] = 0;
+										bpCombat[x] = 0;
 										aArrayX[y]= playLeftX + 250;
 									}
 								}
@@ -2791,17 +3036,17 @@ public class Play extends BasicGameState{
 									}
 								}
 								for(int y = 0; y < 15; y++){
-									if(baArrayX[x] > playLeftX +600){
-								if(baArrayX[x] < gArrayX[y]+500 && baArrayX[x] > gArrayX[y]-20 || barrowFlight[x] == 1){
-									baCombat[x] = 1;
-									if(barArrayX[x] < gArrayX[y]+75 && barArrayX[x] > gArrayX[y]-25 && gHealth[y] > 0){
-										if(barArrayY[x] > 400){
-										barArrayX[x] = 2000;
-										barrowFlight[x] = 0;
-										baCombatAnimation[x] = 0;
-									gHealth[y] -=badmg;
+									if(bpArrayX[x] > playLeftX +600){
+								if(bpArrayX[x] < gArrayX[y]+500 && bpArrayX[x] > gArrayX[y]-20 || bpFlight[x] == 1){
+									bpCombat[x] = 1;
+									if(bprArrayX[x] < gArrayX[y]+75 && bprArrayX[x] > gArrayX[y]-25 && gHealth[y] > 0){
+										if(bprArrayY[x] > 450){
+										bprArrayX[x] = 2000;
+										bpFlight[x] = 0;
+										bpCombatAnimation[x] = 0;
+									gHealth[y] -=bpdmg;
 									if(gHealth[y] <=0){
-										baCombat[x] = 0;
+										bpCombat[x] = 0;
 										gArrayX[y]= playLeftX +250;
 									}
 									}
@@ -2810,17 +3055,17 @@ public class Play extends BasicGameState{
 									}
 								}
 								for(int y = 0; y < 15; y++){
-									if(baArrayX[x] > playLeftX +600){
-								if(baArrayX[x] < cArrayX[y]+600 && baArrayX[x] > cArrayX[y]-50 || barrowFlight[x] == 1){
-									baCombat[x] = 1;
-									if(barArrayX[x] < cArrayX[y]+300 && barArrayX[x] > cArrayX[y]-25 && cHealth[y] > 0){
-										if(barArrayY[x] > 400){
-										barArrayX[x] = 2000;
-										barrowFlight[x] = 0;
-										baCombatAnimation[x] = 0;
-									cHealth[y] -=badmg;
+									if(bpArrayX[x] > playLeftX +600){
+								if(bpArrayX[x] < cArrayX[y]+600 && bpArrayX[x] > cArrayX[y]-50 || bpFlight[x] == 1){
+									bpCombat[x] = 1;
+									if(bprArrayX[x] < cArrayX[y]+300 && bprArrayX[x] > cArrayX[y]-25 && cHealth[y] > 0){
+										if(bprArrayY[x] > 500){
+										bprArrayX[x] = 2000;
+										bpFlight[x] = 0;
+										bpCombatAnimation[x] = 0;
+									cHealth[y] -=bpdmg;
 									if(cHealth[y] <=0){
-										baCombat[x] = 0;
+										bpCombat[x] = 0;
 										cArrayX[y]= playLeftX +250;
 									}
 									}
@@ -2829,18 +3074,18 @@ public class Play extends BasicGameState{
 									}
 								}
 								for(int y = 0; y < 15; y++){
-									if(baArrayX[x] > playLeftX +600){
-							if(baArrayX[x] < pArrayX[y]+560 && baArrayX[x] > pArrayX[y]-50 || barrowFlight[x] == 1){
-								baCombat[x] = 1;
-								if(barArrayX[x] <pArrayX[y]+65 && barArrayX[x] > pArrayX[y]-25 && pHealth[y] > 0){
-									if(barArrayY[x] < 300){
-									barArrayX[x] = 2000;
-									barrowFlight[x] = 0;
-									baCombatAnimation[x] = 0;
-									baStaticP[x] = 0;
-									pHealth[y] -=badmg;
+									if(bpArrayX[x] > playLeftX +600){
+							if(bpArrayX[x] < pArrayX[y]+560 && bpArrayX[x] > pArrayX[y]-50 || bpFlight[x] == 1){
+								bpCombat[x] = 1;
+								if(bprArrayX[x] <pArrayX[y]+65 && bprArrayX[x] > pArrayX[y]-25 && pHealth[y] > 0){
+									if(bprArrayY[x] < 300){
+									bprArrayX[x] = 2000;
+									bpFlight[x] = 0;
+									bpCombatAnimation[x] = 0;
+									bpStaticP[x] = 0;
+									pHealth[y] -=bpdmg;
 									if(pHealth[y] <=0){
-										baCombat[x] = 0;
+										bpCombat[x] = 0;
 										pArrayX[y]= playLeftX + 250;
 									}
 								}
@@ -2848,6 +3093,15 @@ public class Play extends BasicGameState{
 									}
 									}
 								}
+								//CHECKING TO SEE IF PHOENIX IS AROUND
+								for(int y = 0; y < 15; y ++){
+									if(bpFlight[x] == 0){
+									if(bpArrayX[x] < pArrayX[y]+560 && bpArrayX[x] > pArrayX[y]-50 && pHealth[y] > 0){
+										bpCheckP[x]++;
+										bpStaticP[x] = 1;
+								}
+									}
+								}	
 							if(bpCombat[x] == 1){
 								if(bpCombatAnimation[x] <=0 && bpFlight[x] == 0){
 								bpCombatAnimation[x] = 50;
@@ -2865,7 +3119,7 @@ public class Play extends BasicGameState{
 							}
 							if(bpAlive[x] == 1){
 								if(bpCombatAnimation[x] == 1){
-									if(bprArrayX[x] > playLeftX && bprArrayX[x] < playRightX+550){
+									if(bprArrayX[x] > playLeftX && bprArrayX[x] > playLeftX + 600){
 									bpFlight[x] = 1;
 									}
 							g.drawImage(bppicArray2[x], (float) bpArrayX[x], 70);
@@ -2873,19 +3127,30 @@ public class Play extends BasicGameState{
 									g.drawImage(bppicArray[x], (float) bpArrayX[x], 70);
 								}
 								if(bpFlight[x] == 1){
+									if(bpStaticP[x] == 0){
 								g.drawImage(bprpicArray[x], bprArrayX[x], bprArrayY[x]);
-								bprArrayX[x]+=bprSpeed;
+								bprArrayX[x]-=bprSpeed;
 								bprArrayY[x]+=3;
+									}else{
+								g.drawImage(bprpicArray2[x], bprArrayX[x], bprArrayY[x]);
+								bprArrayX[x]-=bprSpeed;
+									}
 								}
 								if(bpCombatAnimation[x] == 2){
+									if(bpStaticP[x] == 0){
 									bprArrayX[x] = (int) (bpArrayX[x]+90);
 									bprArrayY[x] = 110;
+									}else{
+										bprArrayX[x] = (int) (bpArrayX[x]+40);
+										bprArrayY[x] = 110;	
+									}
 								}
 								bpAlive[x] = 0;
 								if(bpCombatAnimation[x] > 0 && bpFlight[x] == 0){
 									bpCombatAnimation[x]--;
 								}
 							}
+							bpCheckP[x] = 0;
 						}
 						//resetting phoenix fire-ball if goes below map
 						for(int x = 0; x < 15; x++){
@@ -2894,9 +3159,10 @@ public class Play extends BasicGameState{
 							bprArrayX[x] = -100;
 							bpFlight[x] = 0;
 							bpCombatAnimation[x] = 0;
+							bpStaticP[x] = 0;
 						}
 						}
-						if(bpcdr <= 0){
+						if(bpcdr <= 0){	
 							int vv = 0;
 							for(int x = 0; x < 15; x++){
 								if(bpHealth[x] <= 0 && vv == 0){
@@ -3063,16 +3329,19 @@ public class Play extends BasicGameState{
 				aCombat[x] = 0;
 				}
 				if(baArrayX[x] > playLeftX +250){
-					baCombat[x] = 0;
-					}
+				baCombat[x] = 0;
+				}
 				if(cArrayX[x] < playRightX +750){
 				cCombat[x] = 0;
 				}
 				if(bcArrayX[x] > playLeftX +750){
-					bcCombat[x] = 0;
-					}
+				bcCombat[x] = 0;
+				}
 				if(pArrayX[x] < playRightX +750){
 				pCombat[x] = 0;
+				}
+				if(bpArrayX[x] > playLeftX +750){
+				bpCombat[x] = 0;
 				}
 			}
 			warriorRepeater = 15;
@@ -3303,6 +3572,7 @@ public class Play extends BasicGameState{
 								arrowFlight[x] = 0;
 								mana-=10;
 								acdr = aMaxCdr;
+								aStaticP[x] = 0;
 								vvv = 1;
 							}
 						}
@@ -3322,6 +3592,7 @@ public class Play extends BasicGameState{
 									arrowFlight[x] = 0;
 									mana-=10;
 									acdr = aMaxCdr;
+									aStaticP[x] = 0;
 									vvv = 1;
 								}
 							}
@@ -3402,6 +3673,7 @@ public class Play extends BasicGameState{
 					aCombat[x] = 0;
 					aCombatAnimation[x] = 0;
 					arrowFlight[x] = 0;
+					aStaticP[x] = 0;
 					
 					baArrayX[x] = 1450;
 					baHealth[x] = 0;
@@ -3410,6 +3682,7 @@ public class Play extends BasicGameState{
 					baCombatAnimation[x] = 0;
 					barrowFlight[x] = 0;
 					baStaticP[x] = 0;
+					
 					badgArrayX[x] = 1450;
 					badgHealth[x] = 0;
 					badgAlive[x] = 0;
@@ -3444,6 +3717,13 @@ public class Play extends BasicGameState{
 					pCombat[x] = 0;
 					pCombatAnimation[x] = 0;
 					pFlight[x] = 0;
+					
+					bpArrayX[x] = 1450;
+					bpHealth[x] = 0;
+					bpAlive[x] = 0;
+					bpCombat[x] = 0;
+					bpCombatAnimation[x] = 0;
+					bpFlight[x] = 0;
 				}
 				meterX = 621;
 				playLeftX = -625;
