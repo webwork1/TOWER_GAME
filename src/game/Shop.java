@@ -20,11 +20,11 @@ public class Shop extends BasicGameState{
 	private UnicodeFont fUnicodeFont;
 	private UnicodeFont fUnicodeFont2;
 	
-	Font font;
 	public static int getHeight;
 	public static int getWidth;
 	
 	Image menuBG;
+	Image bowIcon;
 	//SHOP VARIABLES
 	public static double wSpeed;
 	public static double aSpeed;
@@ -44,6 +44,10 @@ public class Shop extends BasicGameState{
 	public static int cMaxHealth;
 	public static int pMaxHealth;
 	
+	public static int aTotalCost;
+	public static int gTotalCost;
+	public static int cTotalCost;
+	public static int pTotalCost;
 	public int wSpeedCost = 100;
 	public int aSpeedCost = 200;
 	public int gSpeedCost = 300;
@@ -62,11 +66,15 @@ public class Shop extends BasicGameState{
 	public int cHealthCost = 400;
 	public int pHealthCost = 500;
 	
+	public static int bowDamageLevel;
+	public static int bowDistanceLevel;
+	public static int bowSpeedLevel;
+	
 	public static int coins;
 	
 	public int shopSleep;
 	//runs "set variables" function once
-	public boolean setVariablesV = true;
+	public static boolean setVariablesV = true;
 	public Shop(int state) {
 		
 	}
@@ -91,14 +99,54 @@ public class Shop extends BasicGameState{
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)throws SlickException {
 		menuBG = new Image("res/menu.png");
+		bowIcon = new Image("res/bowIcon.png");
 		g.drawImage(menuBG, 0, 0);
 		
-		g.setColor(Color.orange);
-		for(int x = 0; x < 5; x++){
-			for(int y = 0; y < 4; y++){
-			g.fillRect(150 + x*200, 50 + 100*y, 150, 75);
+			g.setColor(Color.orange);
+			for(int x = 0; x < 4; x++){
+			g.fillRect(150, 50 + 100*x, 150, 75);
 			}
-		}
+			
+			for(int x = 0; x < 4; x++){
+				if(aTotalCost != 0){
+					g.setColor(Color.darkGray);
+					g.fillRect(350, 50 + 100*x, 150, 75);	
+				}else{
+					g.setColor(Color.orange);
+					g.fillRect(350, 50 + 100*x, 150, 75);	
+				}
+			}
+			
+			for(int x = 0; x < 4; x++){
+				if(gTotalCost != 0){
+					g.setColor(Color.darkGray);
+					g.fillRect(550, 50 + 100*x, 150, 75);
+				}else{
+					g.setColor(Color.orange);
+					g.fillRect(550, 50 + 100*x, 150, 75);
+				}
+			}
+			
+			for(int x = 0; x < 4; x++){
+				if(cTotalCost != 0){
+					g.setColor(Color.darkGray);
+					g.fillRect(750, 50 + 100*x, 150, 75);
+				}else{
+					g.setColor(Color.orange);
+					g.fillRect(750, 50 + 100*x, 150, 75);
+				}				
+			}
+			
+			for(int x = 0; x < 4; x++){
+				if(pTotalCost != 0){
+					g.setColor(Color.darkGray);
+					g.fillRect(950, 50 + 100*x, 150, 75);
+				}else{
+					g.setColor(Color.orange);
+					g.fillRect(950, 50 + 100*x, 150, 75);
+				}				
+			}
+			
 		//MENU ITEMS
 		fUnicodeFont.drawString(180,90,"Warrior",Color.blue);
 		fUnicodeFont.drawString(385,90,"Archer",Color.blue);
@@ -118,6 +166,7 @@ public class Shop extends BasicGameState{
 		fUnicodeFont2.drawString(175,400,"Cost : " + wHealthCost,Color.gray);
 		
 		//ARCHER STUFF
+		fUnicodeFont2.drawString(380,65,"Cost : " + aTotalCost,Color.white);
 		fUnicodeFont.drawString(380,165,"Speed : " +(int)Math.ceil((aSpeed)*10),Color.black);
 		fUnicodeFont.drawString(370,265,"Damage : " +(int) admg,Color.black);
 		fUnicodeFont.drawString(370,360,"Health : " +(int) (aMaxHealth/10),Color.black);
@@ -127,6 +176,7 @@ public class Shop extends BasicGameState{
 		fUnicodeFont2.drawString(375,400,"Cost : " + aHealthCost,Color.gray);
 		
 		//GOLEM STUFF
+		fUnicodeFont2.drawString(580,65,"Cost : " + gTotalCost,Color.white);
 		fUnicodeFont.drawString(580,165,"Speed : " +(int)Math.ceil((gSpeed)*10),Color.black);
 		fUnicodeFont.drawString(570,265,"Damage : " +(int) Math.ceil(gdmg*100),Color.black);
 		fUnicodeFont.drawString(570,360,"Health : " +(int) (gMaxHealth/10),Color.black);
@@ -137,6 +187,7 @@ public class Shop extends BasicGameState{
 		
 		//CATAPULT STUFF
 		g.setColor(Color.black);
+		fUnicodeFont2.drawString(780,65,"Cost : " + cTotalCost,Color.white);
 		fUnicodeFont.drawString(780,165,"Speed : " +(int)Math.ceil((cSpeed)*10),Color.black);
 		fUnicodeFont.drawString(770,265,"Damage : " +(int) cdmg,Color.black);
 		fUnicodeFont.drawString(770,360,"Health : " +(int) (cMaxHealth/10),Color.black);
@@ -147,6 +198,7 @@ public class Shop extends BasicGameState{
 		
 		//PHOENIX STUFF
 		g.setColor(Color.black);
+		fUnicodeFont2.drawString(980,65,"Cost : " + pTotalCost,Color.white);
 		fUnicodeFont.drawString(980,165,"Speed : " +(int)Math.ceil((pSpeed)*10),Color.black);
 		fUnicodeFont.drawString(970,265,"Damage : " +(int) pdmg,Color.black);
 		fUnicodeFont.drawString(970,360,"Health : " +(int) (pMaxHealth/10),Color.black);
@@ -155,7 +207,7 @@ public class Shop extends BasicGameState{
 		fUnicodeFont2.drawString(980,300,"Cost : " + pDmgCost,Color.gray);
 		fUnicodeFont2.drawString(975,400,"Cost : " + pHealthCost,Color.gray);
 		
-		//START BUTTON9
+		//START BUTTON
 		g.setColor(Color.black);
 		g.fillRect(550, 550, 150, 75);
 		
@@ -164,6 +216,10 @@ public class Shop extends BasicGameState{
 		//DRAWING COINS
 		fUnicodeFont.drawString(575,30,"Coins : " + coins,Color.yellow);
 		
+		//bow icon
+		g.setColor(Color.blue);
+		g.fillRect(150, 550, 60, 60);
+		g.drawImage(bowIcon, 150, 550);
 		
 	}
 
@@ -184,6 +240,16 @@ public class Shop extends BasicGameState{
 					if(input.isMouseButtonDown(0)){
 						setVariables();
 					sbg.enterState(1);
+					}
+				}
+			}
+			//BOW SHOP BUTTON
+			if(mouseX >= begin.toPixelsX(24) && mouseX <= begin.toPixelsX(34)){
+				if(mouseY >=begin.toPixelsY(162) && mouseY <= begin.toPixelsY(179)){
+					if(input.isMouseButtonDown(0)){
+						bowShop.setVariables();
+						bowShop.shopSleep = 20;
+					sbg.enterState(3);
 					}
 				}
 			}
@@ -226,6 +292,17 @@ public class Shop extends BasicGameState{
 		}
 		//ARCHER STUFF
 		if(mouseX >= begin.toPixelsX(56) && mouseX <= begin.toPixelsX(80)){
+			if(mouseY >= begin.toPixelsY(15) && mouseY <= begin.toPixelsY(39)){
+				if(input.isMouseButtonDown(0)){
+			if(coins >= aTotalCost){
+				coins-=aTotalCost;
+				aTotalCost = 0;
+			}
+				}
+			}
+		}
+		if(aTotalCost == 0){
+		if(mouseX >= begin.toPixelsX(56) && mouseX <= begin.toPixelsX(80)){
 			if(mouseY >= begin.toPixelsY(44) && mouseY <= begin.toPixelsY(66)){
 				if(input.isMouseButtonDown(0)){
 			if(coins >= aSpeedCost){
@@ -258,7 +335,19 @@ public class Shop extends BasicGameState{
 			}
 			}
 		}
+		}
 		//GOLEM STUFF
+		if(mouseX >= begin.toPixelsX(88) && mouseX <= begin.toPixelsX(112)){
+			if(mouseY >= begin.toPixelsY(15) && mouseY <= begin.toPixelsY(39)){
+				if(input.isMouseButtonDown(0)){
+			if(coins >= gTotalCost){
+				coins-=gTotalCost;
+				gTotalCost = 0;
+			}
+				}
+			}
+		}
+		if(gTotalCost == 0){
 		if(mouseX >= begin.toPixelsX(88) && mouseX <= begin.toPixelsX(112)){
 			if(mouseY >= begin.toPixelsY(44) && mouseY <= begin.toPixelsY(66)){
 				if(input.isMouseButtonDown(0)){
@@ -292,7 +381,19 @@ public class Shop extends BasicGameState{
 			}
 			}
 		}
+		}
 		//CATAPULT STUFF
+		if(mouseX >= begin.toPixelsX(120) && mouseX <= begin.toPixelsX(144)){
+			if(mouseY >= begin.toPixelsY(15) && mouseY <= begin.toPixelsY(39)){
+				if(input.isMouseButtonDown(0)){
+			if(coins >= cTotalCost){
+				coins-=cTotalCost;
+				cTotalCost = 0;
+			}
+				}
+			}
+		}
+		if(cTotalCost == 0){
 		if(mouseX >= begin.toPixelsX(120) && mouseX <= begin.toPixelsX(144)){
 			if(mouseY >= begin.toPixelsY(44) && mouseY <= begin.toPixelsY(66)){
 				if(input.isMouseButtonDown(0)){
@@ -326,7 +427,19 @@ public class Shop extends BasicGameState{
 			}
 			}
 		}
+		}
 		//PHOENIX STUFF
+		if(mouseX >= begin.toPixelsX(152) && mouseX <= begin.toPixelsX(176)){
+			if(mouseY >= begin.toPixelsY(15) && mouseY <= begin.toPixelsY(39)){
+				if(input.isMouseButtonDown(0)){
+			if(coins >= pTotalCost){
+				coins-=pTotalCost;
+				pTotalCost = 0;
+			}
+				}
+			}
+		}
+		if(pTotalCost == 0){
 		if(mouseX >= begin.toPixelsX(152) && mouseX <= begin.toPixelsX(176)){
 			if(mouseY >= begin.toPixelsY(44) && mouseY <= begin.toPixelsY(66)){
 				if(input.isMouseButtonDown(0)){
@@ -359,6 +472,7 @@ public class Shop extends BasicGameState{
 			}
 			}
 			}
+		}
 		}
 		}else{
 			shopSleep--;
@@ -409,7 +523,19 @@ public class Shop extends BasicGameState{
 		cMaxHealth = Play.cMaxHealth;
 		pMaxHealth = Play.pMaxHealth;
 		
+		aTotalCost = Play.aTotalCost;
+		gTotalCost = Play.gTotalCost;
+		cTotalCost = Play.cTotalCost;
+		pTotalCost = Play.pTotalCost;
+		
 		setVariablesV = false;
+	}
+	
+	public static void getbowShopVariables(){
+		coins = bowShop.coins;
+		bowDamageLevel = bowShop.bowDamageLevel;
+		bowDistanceLevel = bowShop.bowDistanceLevel;
+		bowSpeedLevel = bowShop.bowSpeedLevel;
 	}
 	
 	public void setVariables(){
@@ -436,6 +562,16 @@ public class Shop extends BasicGameState{
 	    Play.gMaxHealth = gMaxHealth;
 		Play.cMaxHealth = cMaxHealth;
 		Play.pMaxHealth = pMaxHealth;
+		
+		Play.aTotalCost = aTotalCost;
+	    Play.gTotalCost = gTotalCost;
+		Play.cTotalCost = cTotalCost;
+		Play.pTotalCost = pTotalCost;
+		
+		
+		Play.bowDamageLevel = bowDamageLevel;
+		Play.bowDistanceLevel = bowDistanceLevel;
+		Play.bowSpeedLevel = bowSpeedLevel;
 		
 		Play.playState = true;
 		

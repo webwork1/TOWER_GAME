@@ -17,7 +17,6 @@ public class Menu extends BasicGameState{
 	public Menu(int state){
 	}
     private UnicodeFont fUnicodeFont;
-
 	Image menuBG;
 	
 	@SuppressWarnings("unchecked")
@@ -52,7 +51,7 @@ public class Menu extends BasicGameState{
 		if(mouseX >= begin.toPixelsX(88) && mouseX <= begin.toPixelsX(110)){
 			if(mouseY >= begin.toPixelsY(66) && mouseY <= begin.toPixelsY(88)){
 				if(input.isMouseButtonDown(0)){
-				sbg.enterState(1);
+				sbg.enterState(2);
 				}
 			}
 		}

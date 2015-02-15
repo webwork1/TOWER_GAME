@@ -14,6 +14,7 @@ public class begin extends StateBasedGame{
 		this.addState(new Menu(menu));
 		this.addState(new Play(play));
 		this.addState(new Shop(shop));
+		this.addState(new bowShop(bowShop));
 	}
 	
 	private static AppGameContainer appgc;
@@ -24,6 +25,7 @@ public class begin extends StateBasedGame{
 	public static final int menu = 0;
 	public static final int play = 1;
 	public static final int shop = 2;
+	public static final int bowShop = 3;
 	public static final int DEFAULT_WIDTH = 1250;
 	public static final int DEFAULT_HEIGHT = 680;
 
@@ -32,11 +34,12 @@ public class begin extends StateBasedGame{
 		this.getState(menu).init(gc, this);
 		this.getState(play).init(gc, this);
 		this.getState(shop).init(gc, this);
+		this.getState(bowShop).init(gc, this);
 		this.enterState(menu);
 		
 	}
 	
-	public static void main(String[] args) throws LWJGLException{		
+	public static void main(String[] args) throws LWJGLException{
 		try{
 			appgc = new AppGameContainer(new ScalableGame(new begin(gamename), DEFAULT_WIDTH, DEFAULT_HEIGHT, false));
 			appgc.setDisplayMode(1250, 680, false);
@@ -66,5 +69,8 @@ public class begin extends StateBasedGame{
 	public static float toPixelsY(float worldUnits){
 		
 		return (sizeHeight/200)*worldUnits;
+	}
+	public static int getSizeHeight(){
+		return (int) sizeHeight;
 	}
 }

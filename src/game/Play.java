@@ -34,6 +34,10 @@ public class Play extends BasicGameState{
 			bgravity[x] = 2.15;
 			pArrayX[x] = -400;
 			bpArrayX[x] = 1450;
+			
+			Bvx[x] = 6;
+			Bt[x] = .5;
+			Bgravity[x] = 2.15;
 		}
 	}
 	
@@ -53,10 +57,10 @@ public class Play extends BasicGameState{
 	double[] wCombatAnimation = new double[15];
 	public static double wSpeed = 1.3;
 	int wcdr;
-	int wMaxCdr = 30;
+	int wMaxCdr = 75;
 	public static double wdmg = .15;
 	public int wdmgcdr =10;
-	public static int wMaxHealth = 1000;
+	public static int wMaxHealth = 550;
 	int[] warriorSpeedV = new int[15];
 	
 	//BAD WARRIOR STUFF
@@ -69,11 +73,11 @@ public class Play extends BasicGameState{
 	int[] badwAlive = new int[15];
 	int[] badwCombat = new int[15];
 	double[] badwCombatAnimation = new double[15];
-	double badwSpeed = 1.3;
+	double badwSpeed = 1.2;
 	int badwcdr;
 	double badwdmg = .15;
-	int badwMaxHealth = 500;
-	int badwMaxcdr = 250;
+	int badwMaxHealth = 550;
+	int badwMaxcdr = 400;
 	int warriorRepeater = 50;
 	int[] badwarriorSpeedV = new int[15];
 	
@@ -133,7 +137,7 @@ public class Play extends BasicGameState{
 	int[] baCombatAnimation = new int[15];
 	double baSpeed = 1.5;
 	int bacdr;
-	int baMaxcdr = 3000;
+	int baMaxcdr = 900;
 	public int badmg = 70;
 	public int baMaxHealth = 500;
 	int[] badarcherSpeedV = new int[15];
@@ -282,11 +286,17 @@ public class Play extends BasicGameState{
 			
 			//FIREBALL STUFF
 			Image pr0,pr1,pr2,pr3,pr4,pr5,pr6,pr7,pr8,pr9,pr10,pr11,pr12,pr13,pr14;
+			Image pr00,pr01,pr02,pr03,pr04,pr05,pr06,pr07,pr08,pr09,pr010,pr011,pr012,pr013,pr014;
 			Image [] prpicArray = new Image[15];
+			Image [] prpicArray2 = new Image[15];
 			int[] prArrayX = new int[15];
 			int[] prArrayY = new int[15];
 			int[] pFlight = new int[15];
 			double prSpeed =4;
+			//checking for phoenix
+			public int[] pCheckP = new int[15];
+			//makes arrows not change between states
+			public int[] pStaticP = new int[15];
 			
 			//BAD PHOENIX STUFF
 			Image bp0, bp1,bp2,bp3,bp4,bp5,bp6,bp7,bp8,bp9,bp10,bp11,bp12,bp13,bp14;
@@ -323,6 +333,10 @@ public class Play extends BasicGameState{
 			//makes arrows not change between states
 			public int[] bpStaticP = new int[15];
 			
+			//BOW STUFF
+			public static int bowDamageLevel;
+			public static int bowDistanceLevel;
+			public static int bowSpeedLevel;
 			
 	//IMAGE ICONS
 	Image wIcon;
@@ -337,8 +351,8 @@ public class Play extends BasicGameState{
 	int gColorV;
 	int cColorV;
 	int pColorV;
-	//MAIN VARIABLES
 	
+	//MAIN VARIABLES	
 	public static boolean playState;
 	//x value of meter
 	public int meterX = 621;
@@ -372,14 +386,20 @@ public class Play extends BasicGameState{
 	public double badTowerDamage = .05;
 	
 	//COINS
-	public static int coins = 0;
+	public static int coins = 100000;
 	
 	//MANA
-	public int mana = 1100;
+	public int mana = 0;
 	public int manaTimer;
 
 	//RANDOM NUMBER GENERATOR
 	Random randomGenerator = new Random();
+	
+	//STUFF FOR CUSTOM SPAWNS
+	public int customSpawnTimer;
+	public int customSpawnCounter;
+	public int customSpawnType;
+	public int customSpawnDelay;
 	
 	//BACKGROUND STUFF
 	Image frontBack;
@@ -395,6 +415,41 @@ public class Play extends BasicGameState{
 	
 	//LEVEL VARIABLE
 	public static int level = 1;
+	
+	//GOOD BOW STUFF
+	Image goodBow1;
+	Image goodBow2;
+	//ammo variables
+	public int[] goodbowammoX = new int[20];
+	public int[] goodbowammoY = new int[20];
+	//changing shoot on and off
+	public boolean goodBowShoot = false;
+	public int shootTime;
+	
+	public int goodBowAnimation = 80;
+
+	int[] BFlight = new int[30];
+	
+	public double BSpeed = 5.5;
+	
+	//arc and trajectory stuff
+	int[] BidX = new int[20];
+	double[] Bvx = new double[20];//6
+	double[] Bt = new double[20];//0.5
+	double[] BtV = new double[20];//0.5
+	double[] Bgravity = new double[20];//2.5 to start
+
+	Color c = new Color(72, 238, 27);
+	
+	Image bowMeter;
+	public int bowMeterY = 256;
+	public int tbdmg = 35;
+	
+	public static int aTotalCost = 500;
+	public static int gTotalCost = 1000;
+	public static int cTotalCost = 1500;
+	public static int pTotalCost = 2100;
+	
 	@SuppressWarnings("unchecked")
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
         Font font = new Font("Serif", Font.PLAIN, 20);
@@ -411,6 +466,11 @@ public class Play extends BasicGameState{
 		playLeftBG = new Image("res/playleftbg.png");
 		playRightBG = new Image("res/playrightbg.png");
 		gameMeter = new Image("res/gameMeter.png");
+		
+		//good bow stuff
+		goodBow1 = new Image("res/towerbow.png");
+		goodBow2 = new Image("res/towerbow2.png");
+		bowMeter = new Image("res/powerMeter.png");
 		
 			///////WARRIOR THINGS///////
 			w0 = new Image("res/warrior1.png");
@@ -1314,6 +1374,22 @@ public class Play extends BasicGameState{
 								pr13 = new Image("res/phoenixammo.png");
 								pr14 = new Image("res/phoenixammo.png");
 								
+								pr00 = new Image("res/phoenixammo2.png");
+								pr01 = new Image("res/phoenixammo2.png");
+								pr02 = new Image("res/phoenixammo2.png");
+								pr03 = new Image("res/phoenixammo2.png");
+								pr04 = new Image("res/phoenixammo2.png");
+								pr05 = new Image("res/phoenixammo2.png");
+								pr06 = new Image("res/phoenixammo2.png");
+								pr07 = new Image("res/phoenixammo2.png");
+								pr08 = new Image("res/phoenixammo2.png");
+								pr09 = new Image("res/phoenixammo2.png");
+								pr010 = new Image("res/phoenixammo2.png");
+								pr011 = new Image("res/phoenixammo2.png");
+								pr012 = new Image("res/phoenixammo2.png");
+								pr013 = new Image("res/phoenixammo2.png");
+								pr014 = new Image("res/phoenixammo2.png");
+								
 									ppicArray[0] = p0;
 									ppicArray[1] = p1;
 									ppicArray[2] = p2;
@@ -1361,6 +1437,22 @@ public class Play extends BasicGameState{
 									prpicArray[12] = pr12;
 									prpicArray[13] = pr13;
 									prpicArray[14] = pr14;
+									
+									prpicArray2[0] = pr00;
+									prpicArray2[1] = pr01;
+									prpicArray2[2] = pr02;
+									prpicArray2[3] = pr03;
+									prpicArray2[4] = pr04;
+									prpicArray2[5] = pr05;
+									prpicArray2[6] = pr06;
+									prpicArray2[7] = pr07;
+									prpicArray2[8] = pr08;
+									prpicArray2[9] = pr09;	
+									prpicArray2[10] = pr010;
+									prpicArray2[11] = pr011;
+									prpicArray2[12] = pr012;
+									prpicArray2[13] = pr013;
+									prpicArray2[14] = pr014;
 									
 									//BAD PHOENIX STUFF
 									
@@ -1533,7 +1625,7 @@ public class Play extends BasicGameState{
 								for(int x = 0; x < 15; x++){
 									if(cHealth[x] >0){
 										if(caArrayX[x] > playRightX+800){
-											badTowerHealth-=goodTowerDamage*20;
+											badTowerHealth-=goodTowerDamage*150;
 											caArrayX[x] = -100;
 											catapultFlight[x] = 0;
 											cCombatAnimation[x] = 0;
@@ -1765,10 +1857,12 @@ public class Play extends BasicGameState{
 								//////////////////////////
 								///BAD CATAPULT STUFF/////
 								////////////////////////
+								
+								if(level >= 12){
 								for(int x = 0; x < 15; x++){
 									if(bcHealth[x] >0){
 										if(bcaArrayX[x] < playLeftX+350){
-											goodTowerHealth-=badTowerDamage*20;
+											goodTowerHealth-=badTowerDamage*150;
 											bcaArrayX[x] = 2000;
 											bcCombat[x] = 0;
 											bcatapultFlight[x] = 0;
@@ -2008,7 +2102,7 @@ public class Play extends BasicGameState{
 								if(bccdr > 0){
 									bccdr--;
 								}
-
+								}
 								
 								//////////////////////////////////////
 								//////////GOOD GOLEM STUFF//////////
@@ -2112,6 +2206,7 @@ public class Play extends BasicGameState{
 								/////BAD GOLEM STUFF///////
 								/////////////////////////////
 								
+								if(level >= 5){
 								for(int x = 0; x < 15; x++){
 									if(badgHealth[x] >0){
 										badgAlive[x] = 1;
@@ -2211,7 +2306,7 @@ public class Play extends BasicGameState{
 								if(badgcdr > 0){
 									badgcdr--;
 								}
-								
+								}
 								//////////////////////////
 								///GOOD ARCHER STUFF/////
 								////////////////////////
@@ -2219,7 +2314,7 @@ public class Play extends BasicGameState{
 								for(int x = 0; x < 15; x++){
 									if(aHealth[x] >0){
 										if(arArrayX[x] > playRightX+800){
-											badTowerHealth-=goodTowerDamage*20;
+											badTowerHealth-=goodTowerDamage*150;
 											arArrayX[x] = -100;
 											arrowFlight[x] = 0;
 											aCombatAnimation[x] = 0;
@@ -2411,15 +2506,15 @@ public class Play extends BasicGameState{
 									acdr--;
 								}
 								
-								
 						//////////////////////////
 						///BAD ARCHER STUFF/////
 						////////////////////////
 								
+						if(level >= 3){
 						for(int x = 0; x < 15; x++){
 							if(baHealth[x] >0){
 								if(barArrayX[x] < playLeftX+350){
-									goodTowerHealth-=badTowerDamage*20;
+									goodTowerHealth-=badTowerDamage*150;
 									barArrayX[x] = 2000;
 									baCombat[x] = 0;
 									barrowFlight[x] = 0;
@@ -2623,7 +2718,7 @@ public class Play extends BasicGameState{
 						if(bacdr > 0){
 							bacdr--;
 						}								
-
+						}
 						//////////////////////////////////////
 						//////////GOOD WARRIOR STUFF//////////
 						/////////////////////////////////////
@@ -2641,7 +2736,7 @@ public class Play extends BasicGameState{
 										badwArrayX[y] = playRightX+2500;
 										wCombat[x] = 0;
 										coins+=5;
-										mana+=5;
+										mana+=2;
 									}
 								}
 									}else{
@@ -2697,7 +2792,7 @@ public class Play extends BasicGameState{
 								}
 							}else{
 								if(warriorSpeedV[x] <=0){
-								warriorSpeedV[x] = 1;
+								warriorSpeedV[x] = 0;
 								if(wArrayX[x] >= -1){
 									wArrayX[x]+=wSpeed;
 								}else{
@@ -2730,6 +2825,7 @@ public class Play extends BasicGameState{
 						/////BAD WARRIOR STUFF///////
 						/////////////////////////////
 						
+						if(level >= 1){
 						for(int x = 0; x < 15; x++){
 							if(badwHealth[x] >0){
 								badwAlive[x] = 1;
@@ -2829,7 +2925,7 @@ public class Play extends BasicGameState{
 						if(badwcdr > 0){
 							badwcdr--;
 						}
-						
+						}
 						//////////////////////////
 						///GOOD PHOENIX STUFF/////
 						////////////////////////
@@ -2837,7 +2933,8 @@ public class Play extends BasicGameState{
 						for(int x = 0; x < 15; x++){
 							if(pHealth[x] >0){
 								if(prArrayX[x] > playRightX+800){
-									badTowerHealth-=goodTowerDamage*20;
+									pStaticP[x] = 0;
+									badTowerHealth-=goodTowerDamage*150;
 									prArrayX[x] = -100;
 									pFlight[x] = 0;
 									pCombatAnimation[x] = 0;
@@ -2929,6 +3026,35 @@ public class Play extends BasicGameState{
 								}
 									}
 								}
+								for(int y = 0; y < 15; y++){
+									if(pArrayX[x] < playRightX +750){
+							if(pArrayX[x] > bpArrayX[y]-550 && pArrayX[x] < bpArrayX[y]-50 || pFlight[x] == 1){
+								pCombat[x] = 1;
+								if(prArrayX[x] > bpArrayX[y]-65 && prArrayX[x] < bpArrayX[y]+25 && bpHealth[y] > 0){
+									if(prArrayY[x] < 300){
+									prArrayX[x] = 2000;
+									pFlight[x] = 0;
+									pCombatAnimation[x] = 0;
+									pStaticP[x] = 0;
+									bpHealth[y] -=pdmg;
+									if(bpHealth[y] <=0){
+										pCombat[x] = 0;
+										bpArrayX[y]= playLeftX + 250;
+									}
+								}
+								}
+									}
+									}
+								}
+								//CHECKING TO SEE IF BAD PHOENIX IS AROUND
+								for(int y = 0; y < 15; y ++){
+									if(pFlight[x] == 0){
+									if(pArrayX[x] >= bpArrayX[y]-550 && pArrayX[x] < bpArrayX[y]-50 && bpHealth[y] > 0){
+										pCheckP[x]++;
+										pStaticP[x] = 1;
+								}
+									}
+								}	
 							if(pCombat[x] == 1){
 								if(pCombatAnimation[x] <=0 && pFlight[x] == 0){
 								pCombatAnimation[x] = 50;
@@ -2954,9 +3080,14 @@ public class Play extends BasicGameState{
 									g.drawImage(ppicArray[x], (float) pArrayX[x], 70);
 								}
 								if(pFlight[x] == 1){
+									if(pStaticP[x] == 0){
 								g.drawImage(prpicArray[x], prArrayX[x], prArrayY[x]);
 								prArrayX[x]+=prSpeed;
 								prArrayY[x]+=3;
+									}else{
+									g.drawImage(prpicArray2[x], prArrayX[x], prArrayY[x]);
+									prArrayX[x]+=prSpeed;
+								}
 								}
 								if(pCombatAnimation[x] == 2){
 									prArrayX[x] = (int) (pArrayX[x]+90);
@@ -2967,6 +3098,7 @@ public class Play extends BasicGameState{
 									pCombatAnimation[x]--;
 								}
 							}
+							pCheckP[x] = 0;
 						}
 						//resetting phoenix fire-ball if goes below map
 						for(int x = 0; x < 15; x++){
@@ -2985,11 +3117,12 @@ public class Play extends BasicGameState{
 						///BAD PHOENIX STUFF/////
 						////////////////////////
 						
+						if(level >= 12){
 						for(int x = 0; x < 15; x++){
 							if(bpHealth[x] >0){
 								if(bprArrayX[x] < playLeftX+350){
-									goodTowerHealth-=badTowerDamage*20;
-									bprArrayX[x] = -100;
+									goodTowerHealth-=badTowerDamage*150;
+									bprArrayX[x] = 2000;
 									bpFlight[x] = 0;
 									bpCombatAnimation[x] = 0;
 									bpStaticP[x] = 0;
@@ -3177,6 +3310,128 @@ public class Play extends BasicGameState{
 						if(bpcdr > 0){
 							bpcdr--;
 						}
+						}
+						
+						
+						///////////////////////
+						//GOOD BOW LOGIC//////
+						//////////////////////
+						if(goodBowShoot){
+							goodBowAnimation--;					
+							if(goodBowAnimation <= 20){
+								g.drawImage(goodBow1,playLeftX + 120, 0);
+							}else{
+								g.drawImage(goodBow2,playLeftX + 120, 0);
+							}
+							if(goodBowAnimation > 0){
+								goodBowAnimation --;
+							}else{
+								int bCount = 0;
+								for(int x = 0; x < 30; x++){
+									if(bCount == 0){
+										if(BFlight[x] == 0){
+										BFlight[x] = 1;
+										goodbowammoX[x] = playLeftX+370;
+										Bvx[x] = 6;
+										//.019
+										BtV[x] = ((.02-(bowDistanceLevel*.0005))*bowMeterY/434);
+										Bt[x] = .5;
+										Bgravity[x] = 2.15;
+										bCount = 1;
+										}
+									}
+								}
+								goodBowAnimation = (int) (80 - bowSpeedLevel*2.5);
+							}
+						}else{
+							g.drawImage(goodBow2,playLeftX + 120, 0);
+						}
+						g.setColor(c);
+						for(int x = 0; x < 30; x++){							
+							if(BFlight[x] == 1){
+								goodbowammoY[x] = (int) (((Bvx[x])*(Bt[x]-Bgravity[x])*Bt[x]*(Bt[x]/2))*32)+148;
+								g.fillOval((float) (goodbowammoX[x]+Bvx[x]*Bt[x]),(int) goodbowammoY[x], 24, 24);
+								goodbowammoX[x]+=BSpeed;							
+								Bt[x]+=BtV[x];
+								if(goodbowammoY[x] > 720){
+									BFlight[x] = 0;
+								}
+								
+								for(int y = 0; y < 15; y++){
+									if(goodbowammoX[x] < playRightX +750){
+								if(goodbowammoX[x] > bpArrayX[y]-35 && goodbowammoX[x] < bpArrayX[y]+110 && bpHealth[y] > 0){
+									if(goodbowammoY[x] < 250 && goodbowammoY[x] > 150){
+									bpHealth[y] -=tbdmg + bowDamageLevel*5;
+									BFlight[x] = 0;
+									if(bpHealth[y] <=0){									
+										bpArrayX[y] = playRightX+2500;
+										coins+=5;
+									}
+								}
+								}
+									}
+								}
+								for(int y = 0; y < 15; y++){
+									if(goodbowammoX[x] < playRightX +750){
+								if(goodbowammoX[x] > bcArrayX[y] && goodbowammoX[x] < bcArrayX[y]+300 && bcHealth[y] > 0){
+									if(goodbowammoY[x] > 520){
+									bcHealth[y] -=tbdmg + bowDamageLevel*5;
+									BFlight[x] = 0;
+									if(bcHealth[y] <=0){
+										bcArrayX[y] = playRightX+2500;
+										coins+=5;
+									}
+								}
+								}
+									}
+								}
+								for(int y = 0; y < 15; y++){
+									if(goodbowammoX[x] < playRightX +750){
+								if(goodbowammoX[x] > badgArrayX[y]-15 && goodbowammoX[x] < badgArrayX[y]+110 && badgHealth[y] > 0){
+									if(goodbowammoY[x] > 450){
+									badgHealth[y] -=tbdmg + bowDamageLevel*5;
+									BFlight[x] = 0;
+									if(badgHealth[y] <=0){
+										badgArrayX[y] = playRightX+2500;
+										coins+=5;
+									}
+								}
+								}
+									}
+								}
+								for(int y = 0; y < 15; y++){
+									if(goodbowammoX[x] < playRightX +750){
+								if(goodbowammoX[x] > baArrayX[y]-5 && goodbowammoX[x] < baArrayX[y]+50 && baHealth[y] > 0){
+									if(goodbowammoY[x] > 520){
+									baHealth[y] -=tbdmg + bowDamageLevel*5;
+									BFlight[x] = 0;
+									if(baHealth[y] <=0){
+										baArrayX[y] = playRightX+2500;
+										coins+=5;
+									}
+								}
+								}
+									}
+								}
+								for(int y = 0; y < 15; y++){
+									if(goodbowammoX[x] < playRightX +750){
+								if(goodbowammoX[x] > badwArrayX[y]-5 && goodbowammoX[x] < badwArrayX[y]+50 && badwHealth[y] > 0){
+									if(goodbowammoY[x] > 520){
+									badwHealth[y] -=tbdmg + bowDamageLevel*5;
+									BFlight[x] = 0;
+									if(badwHealth[y] <=0){
+										badwArrayX[y] = playRightX+2500;
+										coins+=5;
+									}
+								}
+								}
+									}
+								}
+								}
+						}
+						
+						g.drawImage(bowMeter, 5, 250);
+						g.fillRect(17, bowMeterY, 30, 10);
 						
 						
 						//DRAWING BOTTOM BOXES (boxes on bottom)
@@ -3291,6 +3546,10 @@ public class Play extends BasicGameState{
 		Input input = gc.getInput();
 		int mouseX = Mouse.getX();
 		int mouseY = 680-Mouse.getY();
+		
+		//looping custom Spawns
+		customSpawns();
+				
 		//PAUSE STUFF
 		if(input.isKeyPressed(Input.KEY_P)){
 			if(pauseTime <=0){
@@ -3309,6 +3568,42 @@ public class Play extends BasicGameState{
 		pauseTime--;
 		
 		if(pause == false){
+			
+			//SHOOTING BOW
+			if(input.isKeyPressed(Input.KEY_S)){
+				if(shootTime <=0){
+					shootTime = 15;
+					if(goodBowShoot){
+						goodBowShoot = false;
+					}else{
+						goodBowShoot = true;
+					}
+				}
+			}
+			shootTime --;
+			
+			//CHANGING POWER
+			if(bowMeterY > 255 && bowMeterY < 435){
+				if(input.isKeyDown(Input.KEY_UP)){
+					if(bowMeterY > 256){
+					bowMeterY-=1;
+					}
+				}
+				if(input.isKeyDown(Input.KEY_DOWN)){
+					if(bowMeterY < 434){
+					bowMeterY+=1;
+					}
+				}
+			}
+			if(input.isMouseButtonDown(0)){
+				if(mouseX >= begin.toPixelsX(1) && mouseX <= begin.toPixelsX(13)){
+					if(mouseY >= begin.toPixelsY(76) && mouseY <= begin.toPixelsY(127)){
+						if(begin.getSizeHeight() == 680){
+						bowMeterY = begin.getSizeHeight()-Mouse.getY();
+						}
+					}
+					}
+			}
 		if(warriorRepeater >0){
 			warriorRepeater--;
 		}else{
@@ -3377,6 +3672,7 @@ public class Play extends BasicGameState{
 				prArrayX[x]+=movingSpeed;
 				bpArrayX[x]+=movingSpeed;
 				bprArrayX[x]+=movingSpeed;
+				goodbowammoX[x]+=movingSpeed;
 			}
 		}
 		
@@ -3413,24 +3709,25 @@ public class Play extends BasicGameState{
 				prArrayX[x]-=movingSpeed;
 				bpArrayX[x]-=movingSpeed;
 				bprArrayX[x]-=movingSpeed;
+				goodbowammoX[x]-=movingSpeed;
 			}
 		} 
 		
 		
 		//LEFT AND RIGHT KEY TESTING
-		if(input.isKeyDown(Input.KEY_UP) && movingSpeed <49 && moveSpeakTime > 50){
+		if(input.isKeyDown(Input.KEY_Q) && movingSpeed <20 && moveSpeakTime > 50){
 			movingSpeed+=7;
 			moveSpeakTime = 0;
 		}
 		
-		if(input.isKeyDown(Input.KEY_DOWN) && movingSpeed >7 && moveSpeakTime > 50){
+		if(input.isKeyDown(Input.KEY_A) && movingSpeed >7 && moveSpeakTime > 50){
 			movingSpeed -=7;
 			moveSpeakTime = 0;
 		}
 			
 			
 			//MANA TIMER
-			if(manaTimer < 18){
+			if(manaTimer < 30){
 				manaTimer++;
 			}else{
 				manaTimer = 0;
@@ -3450,6 +3747,7 @@ public class Play extends BasicGameState{
 				}
 			}
 			
+			if(cTotalCost == 0){
 			if(mouseX >= 370 && mouseX <= 430){
 				if(mouseY >616 && mouseY < 676){
 					if(input.isMouseButtonDown(0)){
@@ -3488,7 +3786,8 @@ public class Play extends BasicGameState{
 						}
 					}
 				}
-
+			}
+			if(gTotalCost == 0){
 			//GOLEM MOUSE AND KEY INPUT
 			if(mouseX >= 280 && mouseX <= 340){
 				if(mouseY >616 && mouseY < 676){
@@ -3523,17 +3822,18 @@ public class Play extends BasicGameState{
 							}
 					}
 				}
+			}
 			//WARRIOR MOUSE AND KEY INPUT
 			if(mouseX >= 100 && mouseX < 160){
 				if(mouseY >616 && mouseY < 676){
 					if(input.isMouseButtonDown(0)){
-					if(mana >= 5 && wcdr == 0){
+					if(mana >= 10 && wcdr == 0){
 						int vvv = 0;
 						for(int x = 0; x < 15; x++){
 							if(wHealth[x] <= 0 && vvv == 0){
 								wHealth[x] = wMaxHealth;
 								wCombat[x] = 0;
-								mana-=5;
+								mana-=10;
 								wcdr = wMaxCdr;
 								vvv = 1;
 							}
@@ -3543,13 +3843,13 @@ public class Play extends BasicGameState{
 				}
 			}else{
 				if(input.isKeyDown(Input.KEY_1)){
-					if(mana >= 5 && wcdr == 0){
+					if(mana >= 10 && wcdr == 0){
 						int vvv = 0;
 						for(int x = 0; x < 15; x++){
 							if(wHealth[x] <= 0 && vvv == 0){
 								wHealth[x] = wMaxHealth;
 								wCombat[x] = 0;
-								mana-=5;
+								mana-=10;
 								wcdr = wMaxCdr;
 								vvv = 1;
 							}
@@ -3557,6 +3857,7 @@ public class Play extends BasicGameState{
 						}
 				}
 			}
+			if(aTotalCost == 0){
 			// ARCHER MOUSE AND KEY INPUT
 			if(mouseX >= 190 && mouseX <= 250){
 				if(mouseY >616 && mouseY < 676){
@@ -3599,6 +3900,8 @@ public class Play extends BasicGameState{
 							}
 					}
 				}
+			}
+			if(pTotalCost == 0){
 			//PHOENIX MOUSE AND KEY INPUT
 			if(mouseX >= 460 && mouseX < 520){
 				if(mouseY >616 && mouseY < 676){
@@ -3615,6 +3918,7 @@ public class Play extends BasicGameState{
 								pFlight[x] = 0;
 								mana-=10;
 								pcdr = pMaxCdr;
+								pStaticP[x] = 0;
 								vvv = 1;
 							}
 						}
@@ -3635,20 +3939,26 @@ public class Play extends BasicGameState{
 								pFlight[x] = 0;
 								mana-=10;
 								pcdr = pMaxCdr;
+								pStaticP[x] = 0;
 								vvv = 1;
 							}
 						}
 						}
 				}
 			}
+			}
 
 			//CHANGING TO STAGE 3
 			if(badTowerHealth <= 0){
+				Shop.setVariablesV = true;
 				sbg.enterState(2);
 			}
 			
 			//RESET MAP
 			if(playState){
+				for(int x = 0; x < 30; x++){
+					BFlight[x] = 0;
+				}
 				for(int x = 0; x < 15; x++){
 					wArrayX[x] = -400;
 					wHealth[x] = 0;
@@ -3730,6 +4040,8 @@ public class Play extends BasicGameState{
 				
 				playRightX = 625;
 				
+				farBackX = -350;
+				
 				 goodTowerHealthX = -550;
 				 badTowerHealthX = 1650;
 
@@ -3737,26 +4049,40 @@ public class Play extends BasicGameState{
 				mana = 0;
 				
 				//BAD GUY ADDITIONS
+				if(level >= 1){
+					badwdmg +=.005;
+					badwMaxHealth +=10;
+					badwMaxcdr -=5;
+					badwSpeed +=.025;
+				}
 				
-				badwdmg +=.02;
-				badwMaxHealth +=10;
-				badwMaxcdr -=5;
-				badwSpeed +=.2;
-				
-				badmg +=2;
+				if(level >= 3){
+				badmg +=3;
 				baMaxHealth +=10;
 				baMaxcdr -=5;
 				baSpeed +=.2;
+				}
 				
+				if(level >= 5){
 				badgdmg +=.02;
 				badgMaxHealth +=10;
 				badgMaxcdr -=3;
 				badgSpeed +=.2;
+				}
 				
+				if(level >= 9){
 				bcdmg +=1;
 				bcMaxHealth +=10;
 				bcMaxcdr -=3;
 				bcSpeed +=.2;
+				}
+				
+				if(level >= 12){
+				bpdmg +=1;
+				bpMaxHealth +=10;
+				bpMaxCdr -=3;
+				bpSpeed +=.2;
+				}
 				
 				playState = false;
 			}
@@ -3766,4 +4092,48 @@ public class Play extends BasicGameState{
 	public int getID(){
 		return 1;
 	}
+	
+	//sets custom spawns
+	public void customSpawns(){
+		
+		//CHOOSING SPAWN TYPE
+		if(customSpawnCounter <= 0){
+			
+			//LEVEL 1 and 2 MAKING DOUBLE WARRIOR WAVES
+		if(randomGenerator.nextInt(2000) == 1){
+			if(level == 1){
+			customSpawnType = 0;
+			customSpawnCounter = 2;
+			customSpawnDelay = 100;
+			}else{
+			customSpawnType = 0;
+			customSpawnCounter = 3;
+			customSpawnDelay = 75;	
+			}
+			}
+		}
+		
+		//SPAWN TYPE LOGIC
+		if(customSpawnTimer <= 0 && customSpawnCounter > 0){
+			customSpawnCounter--;
+		switch(customSpawnType){
+		
+		case 0:
+			badwcdr = 0;
+			break;
+			
+		case 1:
+			break;		
+	}
+		}
+		
+		//making execute custom spawns loop
+		if(customSpawnTimer <= 0){
+			customSpawnTimer = customSpawnDelay;
+		}
+		if(customSpawnTimer > 0){
+			customSpawnTimer--;
+		}
+	}
+			
 }
