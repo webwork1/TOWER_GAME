@@ -74,19 +74,19 @@ public class bowShop  extends BasicGameState{
 		//DISTANCE
 		
 		fUnicodeFont.drawString(362,170,"Bow Distance",Color.blue);
-		fUnicodeFont.drawString(370,260,"Current : " + bowDistanceLevel,Color.black);
+		fUnicodeFont.drawString(360,260,"Current : " + bowDistanceLevel + "/10",Color.black);
 		fUnicodeFont2.drawString(382,290,"Cost : " + bowDistanceCost,Color.gray);
 		
 		//SPEED
 		
 		fUnicodeFont.drawString(570,170,"Bow Speed",Color.blue);
-		fUnicodeFont.drawString(570,260,"Current : " + bowSpeedLevel,Color.black);
+		fUnicodeFont.drawString(560,260,"Current : " + bowSpeedLevel + "/20",Color.black);
 		fUnicodeFont2.drawString(582,290,"Cost : " + bowSpeedCost,Color.gray);
 		
 		//DAMAGE
 		
 		fUnicodeFont.drawString(762,170,"Bow Damage",Color.blue);
-		fUnicodeFont.drawString(770,260,"Current : " + bowDamageLevel,Color.black);
+		fUnicodeFont.drawString(760,260,"Current : " + bowDamageLevel + "/20",Color.black);
 		fUnicodeFont2.drawString(782,290,"Cost : " + bowDamageCost,Color.gray);
 	}
 
@@ -157,6 +157,7 @@ public class bowShop  extends BasicGameState{
 		
 		if(input.isKeyDown(Input.KEY_ESCAPE)){
 			gc.exit();
+
 		}
 		if(input.isKeyPressed(Input.KEY_R)){
 			if(gc.getWidth() > 1200 && gc.getWidth() < 1280){

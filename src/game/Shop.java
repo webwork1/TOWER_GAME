@@ -25,6 +25,7 @@ public class Shop extends BasicGameState{
 	
 	Image menuBG;
 	Image bowIcon;
+	Image manaIcon;
 	//SHOP VARIABLES
 	public static double wSpeed;
 	public static double aSpeed;
@@ -70,6 +71,12 @@ public class Shop extends BasicGameState{
 	public static int bowDistanceLevel;
 	public static int bowSpeedLevel;
 	
+	public static int towerHealth = 350;
+	public static int maxMana = 50;
+	public static int manaIncome = 1;
+	public static int goldIncome = 1;
+	public static int unitCdr = 1;
+	
 	public static int coins;
 	
 	public int shopSleep;
@@ -100,6 +107,7 @@ public class Shop extends BasicGameState{
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)throws SlickException {
 		menuBG = new Image("res/menu.png");
 		bowIcon = new Image("res/bowIcon.png");
+		manaIcon = new Image("res/manaIcon.png");
 		g.drawImage(menuBG, 0, 0);
 		
 			g.setColor(Color.orange);
@@ -221,6 +229,11 @@ public class Shop extends BasicGameState{
 		g.fillRect(150, 550, 60, 60);
 		g.drawImage(bowIcon, 150, 550);
 		
+		//resource (mana) icon
+			g.setColor(Color.blue);
+			g.fillRect(240, 550, 60, 60);
+			g.drawImage(manaIcon, 240, 550);
+		
 	}
 
 	@Override
@@ -250,6 +263,16 @@ public class Shop extends BasicGameState{
 						bowShop.setVariables();
 						bowShop.shopSleep = 20;
 					sbg.enterState(3);
+					}
+				}
+			}
+			//RESOURCE SHOP BUTTON
+			if(mouseX >= begin.toPixelsX(38) && mouseX <= begin.toPixelsX(48)){
+				if(mouseY >=begin.toPixelsY(162) && mouseY <= begin.toPixelsY(179)){
+					if(input.isMouseButtonDown(0)){
+						resourceShop.setVariables();
+						resourceShop.shopSleep = 20;
+					sbg.enterState(4);
 					}
 				}
 			}
@@ -496,7 +519,6 @@ public class Shop extends BasicGameState{
 				begin.resize(1250, 680, false);
 			}
 		}
-		
 	}
 
 	@Override
@@ -538,6 +560,15 @@ public class Shop extends BasicGameState{
 		bowSpeedLevel = bowShop.bowSpeedLevel;
 	}
 	
+	public static void getresourceShopVariables(){
+		coins = resourceShop.coins;
+		towerHealth = resourceShop.towerHealth;
+		maxMana = resourceShop.maxMana;
+		manaIncome = resourceShop.manaIncome;
+		goldIncome = resourceShop.goldIncome;
+		unitCdr = resourceShop.unitCdr;
+	}
+	
 	public void setVariables(){
 		
 		Play.badTowerMaxHealth +=250;
@@ -572,6 +603,12 @@ public class Shop extends BasicGameState{
 		Play.bowDamageLevel = bowDamageLevel;
 		Play.bowDistanceLevel = bowDistanceLevel;
 		Play.bowSpeedLevel = bowSpeedLevel;
+		
+		Play.goodTowerMaxHealth = towerHealth;
+		Play.maxMana = maxMana;
+		Play.manaIncome = manaIncome;
+		Play.goldIncome = goldIncome;
+		Play.unitCdr = unitCdr;
 		
 		Play.playState = true;
 		

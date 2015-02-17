@@ -97,8 +97,8 @@ public class Play extends BasicGameState{
 	int[] aCombatAnimation = new int[15];
 	public static double aSpeed = 1.5;
 	int acdr;
-	int aMaxCdr = 30;
-	public static int admg = 75;
+	int aMaxCdr = 60;
+	public static int admg = 50;
 	public static int aMaxHealth = 500;
 	int[] archerSpeedV = new int[15];
 	//checking for phoenix
@@ -137,8 +137,8 @@ public class Play extends BasicGameState{
 	int[] baCombatAnimation = new int[15];
 	double baSpeed = 1.5;
 	int bacdr;
-	int baMaxcdr = 900;
-	public int badmg = 70;
+	int baMaxcdr = 1000;
+	public int badmg = 50;
 	public int baMaxHealth = 500;
 	int[] badarcherSpeedV = new int[15];
 	//checking for phoenix
@@ -168,7 +168,7 @@ public class Play extends BasicGameState{
 			double[] gCombatAnimation = new double[15];
 			public static double gSpeed = 1.1;
 			int gcdr;
-			int gMaxCdr = 35;
+			int gMaxCdr = 90;
 			public static double gdmg = .05;
 			int gdmgcdr =10;
 			public static int gMaxHealth = 3000;
@@ -207,7 +207,7 @@ public class Play extends BasicGameState{
 			double[] cCombatAnimation = new double[15];
 			public static double cSpeed = 1.5;
 			int ccdr;
-			int cMaxCdr = 20;
+			int cMaxCdr = 120;
 			public static int cdmg = 125;
 			int cdmgcdr =10;
 			public static int cMaxHealth = 1000;
@@ -244,7 +244,7 @@ public class Play extends BasicGameState{
 			double[] bcCombatAnimation = new double[15];
 			double bcSpeed = 1.5;
 			int bccdr;
-			int bcMaxcdr = 300;
+			int bcMaxcdr = 1200;
 			int bcdmg = 100;
 			int bcMaxHealth = 500;
 			int[] badcatapultSpeedV = new int[15];
@@ -275,7 +275,7 @@ public class Play extends BasicGameState{
 			int[] pCombatAnimation = new int[15];
 			public static double pSpeed = 1.5;
 			int pcdr;
-			int pMaxCdr = 30;
+			int pMaxCdr = 150;
 			public static int pdmg = 150;
 			public static int pMaxHealth = 400;
 			
@@ -297,7 +297,7 @@ public class Play extends BasicGameState{
 			public int[] pCheckP = new int[15];
 			//makes arrows not change between states
 			public int[] pStaticP = new int[15];
-			
+																							
 			//BAD PHOENIX STUFF
 			Image bp0, bp1,bp2,bp3,bp4,bp5,bp6,bp7,bp8,bp9,bp10,bp11,bp12,bp13,bp14;
 			Image bp02,bp120,bp22,bp32,bp42,bp52,bp62,bp72,bp82,bp92,bp1000,bp1100,bp1200,bp1300,bp1400;
@@ -310,7 +310,7 @@ public class Play extends BasicGameState{
 			int[] bpCombatAnimation = new int[15];
 			public double bpSpeed = 1.5;
 			int bpcdr;
-			int bpMaxCdr = 300;
+			int bpMaxCdr = 1600;
 			public int bpdmg = 15;
 			public int bpMaxHealth = 400;
 			
@@ -378,20 +378,26 @@ public class Play extends BasicGameState{
 	//moves bad tower red health bar
 	public double badTowerX = 150;
 	
-	public double goodTowerMaxHealth = 500;
+	public static double goodTowerMaxHealth = 500;
 	public static double badTowerMaxHealth = 500;
 	
 	//DAMAGE DELT TO TOWERS
 	public double goodTowerDamage = .05;
 	public double badTowerDamage = .05;
 	
-	//COINS
-	public static int coins = 100000;
+	//
+	public static int manaIncome = 0;
+	public static int goldIncome = 0;
+	public static int unitCdr = 0;
 	
-	//MANA
+	//COINS
+	public static int coins = 0;
+	
+	//MANA STUFF
 	public int mana = 0;
+	public static int maxMana = 75;
 	public int manaTimer;
-
+	
 	//RANDOM NUMBER GENERATOR
 	Random randomGenerator = new Random();
 	
@@ -454,7 +460,7 @@ public class Play extends BasicGameState{
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
         Font font = new Font("Serif", Font.PLAIN, 20);
         fUnicodeFont = new UnicodeFont(font, 25, true, false);
-
+        									
 		fUnicodeFont.getEffects().add(new ColorEffect());
         fUnicodeFont.addAsciiGlyphs();
         fUnicodeFont.loadGlyphs();
@@ -1601,7 +1607,7 @@ public class Play extends BasicGameState{
 								fUnicodeFont.drawString(535, 120, "MAP SPEED : " + (int) movingSpeed/7,Color.orange);
 								moveSpeakTime++;
 								}
-								
+																			
 								//LEVEL DISPLAY
 								g.setColor(Color.white);
 								g.drawString("Level : " +  level, 8, 30);
@@ -1610,7 +1616,9 @@ public class Play extends BasicGameState{
 								g.fillRect( goodTowerHealthX, 50, 150, 30);
 								g.setColor(Color.red);
 								g.fillRect( goodTowerHealthX, 50,(int) Math.ceil(goodTowerX), 30);
-								goodTowerX =((150/goodTowerMaxHealth)*goodTowerHealth);
+								goodTowerX =((150/goodTowerMaxHealth)*goodTowerHealth);							
+								g.setColor(Color.black);
+								g.drawString((int) goodTowerHealth + "/" + (int) goodTowerMaxHealth, playLeftX + 115, 55);
 								
 								//HEALTH BAD TOWER
 								g.setColor(Color.lightGray);
@@ -1618,6 +1626,8 @@ public class Play extends BasicGameState{
 								badTowerX =((150/badTowerMaxHealth)*badTowerHealth);
 								g.setColor(Color.red);
 								g.fillRect( badTowerHealthX, 50,(int) Math.ceil(badTowerX), 30);
+								g.setColor(Color.black);
+								g.drawString((int) badTowerHealth + "/" +(int) badTowerMaxHealth, playRightX + 1060, 55);
 								
 								//////////////////////////
 								///GOOD CATAPULT STUFF/////
@@ -1653,8 +1663,8 @@ public class Play extends BasicGameState{
 												cCombatAnimation[x] = 0;
 											badwHealth[y] -=cdmg;
 											if(badwHealth[y] <=0){
-												coins +=5;
-												mana+=5;
+												coins +=5 + goldIncome*2;
+												mana +=2;
 												cCombat[x] = 0;
 												badwArrayX[y]= playRightX +2500;
 											}
@@ -1688,8 +1698,8 @@ public class Play extends BasicGameState{
 											baHealth[y] -=cdmg;
 											if(baHealth[y] <=0){
 												baArrayX[y] = playRightX + 2500;
-												coins+=5;
-												mana+=5;
+												coins +=5 + goldIncome*2;
+												mana +=4;
 												cCombat[x] = 0;
 											}
 										}
@@ -1720,8 +1730,8 @@ public class Play extends BasicGameState{
 											badgHealth[y] -=cdmg;
 											if(badgHealth[y] <=0){
 												badgArrayX[y] = playRightX + 2500;
-												coins +=5;
-												mana+=5;
+												coins +=5 + goldIncome*2;
+												mana+=6;
 												cCombat[x] = 0;
 											}
 											}
@@ -1752,8 +1762,8 @@ public class Play extends BasicGameState{
 											bcHealth[y] -=cdmg;
 											if(bcHealth[y] <=0){
 												bcArrayX[y] = playRightX + 2500;
-												coins +=5;
-												mana+=5;
+												coins +=5 + goldIncome*2;
+												mana+=8;
 												cCombat[x] = 0;
 											}
 											}
@@ -1784,8 +1794,8 @@ public class Play extends BasicGameState{
 											bpHealth[y] -=cdmg;
 											if(bpHealth[y] <=0){
 												bpArrayX[y] = playRightX + 2500;
-												coins +=5;
-												mana+=5;
+												coins +=5 + goldIncome*2;
+												mana+=10;
 												cCombat[x] = 0;
 											}
 											}
@@ -1892,7 +1902,7 @@ public class Play extends BasicGameState{
 											wHealth[y] -=bcdmg;
 											if(wHealth[y] <=0){
 												bcCombat[x] = 0;
-												wArrayX[y]= playLeftX +250;
+												wArrayX[y]= playLeftX - 2500;
 											}
 												}
 											}
@@ -1924,7 +1934,7 @@ public class Play extends BasicGameState{
 											aHealth[y] -=bcdmg;
 											if(aHealth[y] <=0){
 												bcCombat[x] = 0;
-												aArrayX[y]= playLeftX + 250;
+												aArrayX[y]= playLeftX - 2500;
 											}
 										}
 										}
@@ -1954,7 +1964,7 @@ public class Play extends BasicGameState{
 											gHealth[y] -=bcdmg;
 											if(gHealth[y] <=0){
 												bcCombat[x] = 0;
-												gArrayX[y]= playLeftX +250;
+												gArrayX[y]= playLeftX - 2500;
 											}
 											}
 										}
@@ -1984,7 +1994,7 @@ public class Play extends BasicGameState{
 											cHealth[y] -=bcdmg;
 											if(cHealth[y] <=0){
 												bcCombat[x] = 0;
-												cArrayX[y]= playLeftX +250;
+												cArrayX[y]= playLeftX - 2500;
 											}
 											}
 										}
@@ -2014,7 +2024,7 @@ public class Play extends BasicGameState{
 											pHealth[y] -=bcdmg;
 											if(pHealth[y] <=0){
 												bcCombat[x] = 0;
-												pArrayX[y]= playLeftX +250;
+												pArrayX[y]= playLeftX -2500;
 											}
 											}
 										}
@@ -2120,8 +2130,8 @@ public class Play extends BasicGameState{
 											if(badwHealth[y] <=0){
 												badwArrayX[y] = playRightX+2500;
 												gCombat[x] = 0;
-												coins+=5;
-												mana+=5;
+												coins +=5 + goldIncome*2;
+												mana+=2;
 											}
 										}
 											}else{
@@ -2137,8 +2147,8 @@ public class Play extends BasicGameState{
 											if(baHealth[y] <=0){
 												baArrayX[y] = playRightX+2000;
 												badwCombat[x] = 0;
-												coins+=5;
-												mana+=5;
+												coins +=5 + goldIncome*2;
+												mana+=4;
 											}
 										}
 											}
@@ -2151,8 +2161,8 @@ public class Play extends BasicGameState{
 											if(badgHealth[y] <=0){
 												badgArrayX[y] = playRightX+2500;
 												gCombat[x] = 0;
-												coins+=5;
-												mana+=5;
+												coins +=5 + goldIncome*2;
+												mana+=6;
 											}
 										}
 											}
@@ -2165,8 +2175,8 @@ public class Play extends BasicGameState{
 											if(bcHealth[y] <=0){
 												bcArrayX[y] = playRightX+2500;
 												gCombat[x] = 0;
-												coins+=5;
-												mana+=5;
+												coins +=5 + goldIncome*2;
+												mana+=8;
 											}
 										}
 											}
@@ -2206,7 +2216,7 @@ public class Play extends BasicGameState{
 								/////BAD GOLEM STUFF///////
 								/////////////////////////////
 								
-								if(level >= 5){
+								if(level >= 8){
 								for(int x = 0; x < 15; x++){
 									if(badgHealth[x] >0){
 										badgAlive[x] = 1;
@@ -2217,7 +2227,7 @@ public class Play extends BasicGameState{
 											wHealth[y] -=badgdmg;
 											if(wHealth[y] <=0){
 												badgCombat[x] = 0;
-												wArrayX[y]= playLeftX + 250;
+												wArrayX[y]= playLeftX - 2500;
 											}
 										}
 											}else{
@@ -2233,7 +2243,7 @@ public class Play extends BasicGameState{
 											gHealth[y] -=badgdmg;
 											if(gHealth[y] <=0){
 												badgCombat[x] = 0;
-												gArrayX[y]= playLeftX + 250;
+												gArrayX[y]= playLeftX - 2500;
 											}
 										}
 											}
@@ -2245,7 +2255,7 @@ public class Play extends BasicGameState{
 											aHealth[y] -=badgdmg;
 											if(aHealth[y] <=0){
 												badgCombat[x] = 0;
-												aArrayX[y]= playLeftX + 250;
+												aArrayX[y]= playLeftX - 2500;
 											}
 										}
 											}
@@ -2257,7 +2267,7 @@ public class Play extends BasicGameState{
 											cHealth[y] -=badgdmg;
 											if(cHealth[y] <=0){
 												badgCombat[x] = 0;
-												cArrayX[y]= playLeftX + 250;
+												cArrayX[y]= playLeftX - 2500;
 											}
 										}
 											}
@@ -2322,17 +2332,17 @@ public class Play extends BasicGameState{
 										aAlive[x] = 1;
 										for(int y = 0; y < 15; y++){
 											if(aArrayX[x] < playRightX +750){
-										if(aArrayX[x] > badwArrayX[y]-500 && aArrayX[x] < badwArrayX[y]+20 || arrowFlight[x] == 1){
+										if(aArrayX[x] > badwArrayX[y]-500 && aArrayX[x] < badwArrayX[y]+20 && badwHealth[y] > 0 || arrowFlight[x] == 1){
 											aCombat[x] = 1;
-											if(arArrayX[x] > badwArrayX[y]-15 && arArrayX[x] < badwArrayX[y]+15 && badwHealth[y] > 0){
+											if(arArrayX[x] > badwArrayX[y]-15 && arArrayX[x] < badwArrayX[y]+15){
 												if(arArrayY[x] > 400){
 												arArrayX[x] = -100;
 												arrowFlight[x] = 0;
 												aCombatAnimation[x] = 0;
 											badwHealth[y] -=admg;
 											if(badwHealth[y] <=0){
-												coins +=5;
-												mana+=5;
+												coins +=5 + goldIncome*2;
+												mana+=2;
 												aCombat[x] = 0;
 												badwArrayX[y]= playRightX +2500;
 											}
@@ -2345,17 +2355,17 @@ public class Play extends BasicGameState{
 										}
 										for(int y = 0; y < 15; y++){
 											if(aArrayX[x] < playRightX +750){
-									if(aArrayX[x] > baArrayX[y]-500 && aArrayX[x] < baArrayX[y]+20 || arrowFlight[x] == 1){
+									if(aArrayX[x] > baArrayX[y]-500 && aArrayX[x] < baArrayX[y]+20 && baHealth[y] > 0 || arrowFlight[x] == 1){
 										aCombat[x] = 1;
-										if(arArrayX[x] > baArrayX[y]-15 && arArrayX[x] < baArrayX[y]+15 && baHealth[y] > 0){
+										if(arArrayX[x] > baArrayX[y]-15 && arArrayX[x] < baArrayX[y]+15){
 											if(arArrayY[x] > 400){
 											arArrayX[x] = -100;
 											arrowFlight[x] = 0;
 											aCombatAnimation[x] = 0;
 											baHealth[y] -=admg;
 											if(baHealth[y] <=0){
-												coins+=5;
-												mana+=5;
+												coins +=5 + goldIncome*2;
+												mana+=4;
 												aCombat[x] = 0;
 												baArrayX[y]= playRightX +2500;
 											}
@@ -2366,9 +2376,9 @@ public class Play extends BasicGameState{
 										}
 										for(int y = 0; y < 15; y++){
 											if(aArrayX[x] < playRightX +750){
-										if(aArrayX[x] > badgArrayX[y]-500 && aArrayX[x] < badgArrayX[y]+20 || arrowFlight[x] == 1){
+										if(aArrayX[x] > badgArrayX[y]-500 && aArrayX[x] < badgArrayX[y]+20 && badgHealth[y] > 0 || arrowFlight[x] == 1){
 											aCombat[x] = 1;
-											if(arArrayX[x] > badgArrayX[y]-15 && arArrayX[x] < badgArrayX[y]+15 && badgHealth[y] > 0){
+											if(arArrayX[x] > badgArrayX[y]-15 && arArrayX[x] < badgArrayX[y]+15){
 												if(arArrayY[x] > 400){
 												arArrayX[x] = -100;
 												arrowFlight[x] = 0;
@@ -2376,8 +2386,8 @@ public class Play extends BasicGameState{
 											badgHealth[y] -=admg;
 											if(badgHealth[y] <=0){
 												badgArrayX[y] = playRightX+2500;
-												coins +=5;
-												mana+=5;
+												coins +=5 + goldIncome*2;
+												mana+=6;
 												aCombat[x] = 0;
 											}
 											}
@@ -2387,9 +2397,9 @@ public class Play extends BasicGameState{
 										}
 										for(int y = 0; y < 15; y++){
 											if(aArrayX[x] < playRightX +750){
-										if(aArrayX[x] > bcArrayX[y]-500 && aArrayX[x] < bcArrayX[y]+20 || arrowFlight[x] == 1){
+										if(aArrayX[x] > bcArrayX[y]-500 && aArrayX[x] < bcArrayX[y]+20 && bcHealth[y] > 0 || arrowFlight[x] == 1){
 											aCombat[x] = 1;
-											if(arArrayX[x] > bcArrayX[y]-300 && arArrayX[x] < bcArrayX[y]+15 && bcHealth[y] > 0){
+											if(arArrayX[x] > bcArrayX[y]-300 && arArrayX[x] < bcArrayX[y]+15){
 												if(arArrayY[x] > 400){
 												arArrayX[x] = -100;
 												arrowFlight[x] = 0;
@@ -2397,8 +2407,8 @@ public class Play extends BasicGameState{
 											bcHealth[y] -=admg;
 											if(bcHealth[y] <=0){
 												bcArrayX[y] = playRightX+2500;
-												coins +=5;
-												mana+=5;
+												coins +=5 + goldIncome*2;
+												mana+=8;
 												aCombat[x] = 0;
 											}
 											}
@@ -2408,9 +2418,9 @@ public class Play extends BasicGameState{
 										}
 										for(int y = 0; y < 15; y++){
 											if(aArrayX[x] < playRightX +750){
-									if(aArrayX[x] > bpArrayX[y]-550 && aArrayX[x] < bpArrayX[y]-50 || arrowFlight[x] == 1){
+									if(aArrayX[x] > bpArrayX[y]-550 && aArrayX[x] < bpArrayX[y]-50 && bpHealth[y] > 0 || arrowFlight[x] == 1){
 										aCombat[x] = 1;
-										if(arArrayX[x] > bpArrayX[y]-65 && arArrayX[x] < bpArrayX[y]+25 && bpHealth[y] > 0){
+										if(arArrayX[x] > bpArrayX[y]-65 && arArrayX[x] < bpArrayX[y]+25){
 											if(arArrayY[x] < 300){
 											arArrayX[x] = 2000;
 											arrowFlight[x] = 0;
@@ -2418,7 +2428,9 @@ public class Play extends BasicGameState{
 											aStaticP[x] = 0;
 											bpHealth[y] -=admg;
 											if(bpHealth[y] <=0){
+												coins +=5 + goldIncome*2;
 												aCombat[x] = 0;
+												mana+=10;
 												bpArrayX[y]= playLeftX + 250;
 											}
 										}
@@ -2510,7 +2522,7 @@ public class Play extends BasicGameState{
 						///BAD ARCHER STUFF/////
 						////////////////////////
 								
-						if(level >= 3){
+						if(level >= 5){
 						for(int x = 0; x < 15; x++){
 							if(baHealth[x] >0){
 								if(barArrayX[x] < playLeftX+350){
@@ -2523,9 +2535,9 @@ public class Play extends BasicGameState{
 								baAlive[x] = 1;
 								for(int y = 0; y < 15; y++){
 									if(baArrayX[x] > playLeftX +600){
-								if(baArrayX[x] < wArrayX[y]+500 && baArrayX[x] > wArrayX[y]-20 || barrowFlight[x] == 1){
+								if(baArrayX[x] < wArrayX[y]+500 && baArrayX[x] > wArrayX[y]-20 && wHealth[y] > 0 || barrowFlight[x] == 1){
 									baCombat[x] = 1;
-									if(barArrayX[x] < wArrayX[y]+25 && barArrayX[x] > wArrayX[y]-25 && wHealth[y] > 0){
+									if(barArrayX[x] < wArrayX[y]+25 && barArrayX[x] > wArrayX[y]-25){
 										if(barArrayY[x] > 400){
 										barArrayX[x] = 2000;
 										barrowFlight[x] = 0;
@@ -2533,7 +2545,7 @@ public class Play extends BasicGameState{
 									wHealth[y] -=badmg;
 									if(wHealth[y] <=0){
 										baCombat[x] = 0;
-										wArrayX[y]= playLeftX +250;
+										wArrayX[y]= playLeftX -2500;
 									}
 										}
 									}
@@ -2544,9 +2556,9 @@ public class Play extends BasicGameState{
 								}
 								for(int y = 0; y < 15; y++){
 									if(baArrayX[x] > playLeftX +600){
-							if(baArrayX[x] < aArrayX[y]+500 && baArrayX[x] > aArrayX[y]-20 || barrowFlight[x] == 1){
+							if(baArrayX[x] < aArrayX[y]+500 && baArrayX[x] > aArrayX[y]-20 && aHealth[y] > 0 || barrowFlight[x] == 1){
 								baCombat[x] = 1;
-								if(barArrayX[x] <aArrayX[y]+25 && barArrayX[x] > aArrayX[y]-25 && aHealth[y] > 0){
+								if(barArrayX[x] <aArrayX[y]+25 && barArrayX[x] > aArrayX[y]-25){
 									if(barArrayY[x] > 400){
 									barArrayX[x] = 2000;
 									barrowFlight[x] = 0;
@@ -2554,7 +2566,7 @@ public class Play extends BasicGameState{
 									aHealth[y] -=badmg;
 									if(aHealth[y] <=0){
 										baCombat[x] = 0;
-										aArrayX[y]= playLeftX + 250;
+										aArrayX[y]= playLeftX - 2500;
 									}
 								}
 									}
@@ -2563,9 +2575,9 @@ public class Play extends BasicGameState{
 								}
 								for(int y = 0; y < 15; y++){
 									if(baArrayX[x] > playLeftX +600){
-								if(baArrayX[x] < gArrayX[y]+500 && baArrayX[x] > gArrayX[y]-20 || barrowFlight[x] == 1){
+								if(baArrayX[x] < gArrayX[y]+500 && baArrayX[x] > gArrayX[y]-20 && gHealth[y] > 0 || barrowFlight[x] == 1){
 									baCombat[x] = 1;
-									if(barArrayX[x] < gArrayX[y]+75 && barArrayX[x] > gArrayX[y]-25 && gHealth[y] > 0){
+									if(barArrayX[x] < gArrayX[y]+75 && barArrayX[x] > gArrayX[y]-25){
 										if(barArrayY[x] > 400){
 										barArrayX[x] = 2000;
 										barrowFlight[x] = 0;
@@ -2573,7 +2585,7 @@ public class Play extends BasicGameState{
 									gHealth[y] -=badmg;
 									if(gHealth[y] <=0){
 										baCombat[x] = 0;
-										gArrayX[y]= playLeftX +250;
+										gArrayX[y]= playLeftX -2500;
 									}
 									}
 									}
@@ -2582,9 +2594,9 @@ public class Play extends BasicGameState{
 								}
 								for(int y = 0; y < 15; y++){
 									if(baArrayX[x] > playLeftX +600){
-								if(baArrayX[x] < cArrayX[y]+600 && baArrayX[x] > cArrayX[y]-50 || barrowFlight[x] == 1){
+								if(baArrayX[x] < cArrayX[y]+600 && baArrayX[x] > cArrayX[y]-50 && cHealth[y] > 0 || barrowFlight[x] == 1){
 									baCombat[x] = 1;
-									if(barArrayX[x] < cArrayX[y]+300 && barArrayX[x] > cArrayX[y]-25 && cHealth[y] > 0){
+									if(barArrayX[x] < cArrayX[y]+300 && barArrayX[x] > cArrayX[y]-25){
 										if(barArrayY[x] > 400){
 										barArrayX[x] = 2000;
 										barrowFlight[x] = 0;
@@ -2592,7 +2604,7 @@ public class Play extends BasicGameState{
 									cHealth[y] -=badmg;
 									if(cHealth[y] <=0){
 										baCombat[x] = 0;
-										cArrayX[y]= playLeftX +250;
+										cArrayX[y]= playLeftX -2500;
 									}
 									}
 									}
@@ -2601,9 +2613,9 @@ public class Play extends BasicGameState{
 								}
 								for(int y = 0; y < 15; y++){
 									if(baArrayX[x] > playLeftX +600){
-							if(baArrayX[x] < pArrayX[y]+560 && baArrayX[x] > pArrayX[y]-50 || barrowFlight[x] == 1){
+							if(baArrayX[x] < pArrayX[y]+560 && baArrayX[x] > pArrayX[y]-50 && pHealth[y] > 0|| barrowFlight[x] == 1){
 								baCombat[x] = 1;
-								if(barArrayX[x] <pArrayX[y]+65 && barArrayX[x] > pArrayX[y]-25 && pHealth[y] > 0){
+								if(barArrayX[x] <pArrayX[y]+65 && barArrayX[x] > pArrayX[y]-25){
 									if(barArrayY[x] < 300){
 									barArrayX[x] = 2000;
 									barrowFlight[x] = 0;
@@ -2612,7 +2624,7 @@ public class Play extends BasicGameState{
 									pHealth[y] -=badmg;
 									if(pHealth[y] <=0){
 										baCombat[x] = 0;
-										pArrayX[y]= playLeftX + 250;
+										pArrayX[y]= playLeftX - 2500;
 									}
 								}
 								}
@@ -2735,7 +2747,7 @@ public class Play extends BasicGameState{
 									if(badwHealth[y] <=0){
 										badwArrayX[y] = playRightX+2500;
 										wCombat[x] = 0;
-										coins+=5;
+										coins +=5 + goldIncome*2;
 										mana+=2;
 									}
 								}
@@ -2752,8 +2764,8 @@ public class Play extends BasicGameState{
 									if(baHealth[y] <=0){
 										baArrayX[y] = playRightX+2500;
 										badwCombat[x] = 0;
-										coins+=5;
-										mana+=5;
+										coins +=5 + goldIncome*2;
+										mana+=4;
 									}
 								}
 									}
@@ -2766,8 +2778,8 @@ public class Play extends BasicGameState{
 									if(badgHealth[y] <=0){
 										badgArrayX[y] = playRightX+2500;
 										wCombat[x] = 0;
-										coins+=5;
-										mana+=5;
+										coins +=5 + goldIncome*2;
+										mana+=6;
 									}
 								}
 									}
@@ -2780,8 +2792,8 @@ public class Play extends BasicGameState{
 									if(bcHealth[y] <=0){
 										bcArrayX[y] = playRightX+2500;
 										wCombat[x] = 0;
-										coins+=5;
-										mana+=5;
+										coins +=5 + goldIncome*2;
+										mana+=8;
 									}
 								}
 									}
@@ -2836,7 +2848,7 @@ public class Play extends BasicGameState{
 									wHealth[y] -=badwdmg;
 									if(wHealth[y] <=0){
 										badwCombat[x] = 0;
-										wArrayX[y]= playLeftX + 250;
+										wArrayX[y]= playLeftX - 2500;
 									}
 								}
 									}else{
@@ -2852,7 +2864,7 @@ public class Play extends BasicGameState{
 									gHealth[y] -=badwdmg;
 									if(gHealth[y] <=0){
 										badwCombat[x] = 0;
-										gArrayX[y]= playLeftX + 250;
+										gArrayX[y]= playLeftX - 2500;
 									}
 								}
 									}
@@ -2864,7 +2876,7 @@ public class Play extends BasicGameState{
 									aHealth[y] -=badwdmg;
 									if(aHealth[y] <=0){
 										badwCombat[x] = 0;
-										aArrayX[y]= playLeftX + 250;
+										aArrayX[y]= playLeftX - 2500;
 									}
 								}
 									}
@@ -2876,7 +2888,7 @@ public class Play extends BasicGameState{
 									cHealth[y] -=badwdmg;
 									if(cHealth[y] <=0){
 										badwCombat[x] = 0;
-										cArrayX[y]= playLeftX + 250;
+										cArrayX[y]= playLeftX - 2500;
 									}
 								}
 									}
@@ -2942,7 +2954,7 @@ public class Play extends BasicGameState{
 								pAlive[x] = 1;
 								for(int y = 0; y < 15; y++){
 									if(pArrayX[x] < playRightX +750){
-								if(pArrayX[x] > badwArrayX[y]-500 && pArrayX[x] < badwArrayX[y]+20 || pFlight[x] == 1){
+								if(pArrayX[x] > badwArrayX[y]-500 && pArrayX[x] < badwArrayX[y]+20 && badwHealth[y] > 0|| pFlight[x] == 1){
 									if(prArrayY[x] > 500){
 									pCombat[x] = 1;
 									if(prArrayX[x] > badwArrayX[y]-15 && prArrayX[x] < badwArrayX[y]+25){
@@ -2951,10 +2963,10 @@ public class Play extends BasicGameState{
 										pCombatAnimation[x] = 0;
 									badwHealth[y] -=pdmg;
 									if(badwHealth[y] <=0){
-										coins +=5;
-										mana+=5;
+										coins +=5 + goldIncome*2;
 										pCombat[x] = 0;
 										badwArrayX[y]= playRightX +2500;
+										mana+=2;
 									}
 									}
 									}
@@ -2965,7 +2977,7 @@ public class Play extends BasicGameState{
 								}
 								for(int y = 0; y < 15; y++){
 									if(pArrayX[x] < playRightX +750){
-							if(pArrayX[x] > baArrayX[y]-500 && pArrayX[x] < baArrayX[y]+20 || pFlight[x] == 1){
+							if(pArrayX[x] > baArrayX[y]-500 && pArrayX[x] < baArrayX[y]+20 && baHealth[y] > 0 || pFlight[x] == 1){
 								pCombat[x] = 1;
 								if(prArrayX[x] > baArrayX[y]-15 && prArrayX[x] < baArrayX[y]+25){
 									if(prArrayY[x] > 500){
@@ -2974,10 +2986,10 @@ public class Play extends BasicGameState{
 									pCombatAnimation[x] = 0;
 									baHealth[y] -=pdmg;
 									if(baHealth[y] <=0){
-										coins+=5;
-										mana+=5;
+										coins +=5 + goldIncome*2;
 										pCombat[x] = 0;
 										baArrayX[y]= playRightX +2500;
+										mana+=4;
 									}
 								}
 									}
@@ -2986,7 +2998,7 @@ public class Play extends BasicGameState{
 								}
 								for(int y = 0; y < 15; y++){
 									if(pArrayX[x] < playRightX +750){
-								if(pArrayX[x] > badgArrayX[y]-500 && pArrayX[x] < badgArrayX[y]+20 || pFlight[x] == 1){
+								if(pArrayX[x] > badgArrayX[y]-500 && pArrayX[x] < badgArrayX[y]+20 && badgHealth[y] > 0 || pFlight[x] == 1){
 									pCombat[x] = 1;
 									if(prArrayX[x] > badgArrayX[y]-15 && prArrayX[x] < badgArrayX[y]+85){
 										if(prArrayY[x] > 450){
@@ -2996,9 +3008,9 @@ public class Play extends BasicGameState{
 									badgHealth[y] -=pdmg;
 									if(badgHealth[y] <=0){
 										badgArrayX[y] = playRightX+2500;
-										coins +=5;
-										mana+=5;
+										coins +=5 + goldIncome*2;
 										pCombat[x] = 0;
+										mana+=6;
 									}
 									}
 									}
@@ -3007,7 +3019,7 @@ public class Play extends BasicGameState{
 								}
 								for(int y = 0; y < 15; y++){
 									if(pArrayX[x] < playRightX +750){
-								if(pArrayX[x] > bcArrayX[y]-600 && pArrayX[x] < bcArrayX[y]+20 || pFlight[x] == 1){
+								if(pArrayX[x] > bcArrayX[y]-600 && pArrayX[x] < bcArrayX[y]+20 && bcHealth[y] > 0 || pFlight[x] == 1){
 									pCombat[x] = 1;
 									if(prArrayX[x] > bcArrayX[y]-15 && prArrayX[x] < bcArrayX[y]+300){
 										if(prArrayY[x] > 500){
@@ -3017,9 +3029,9 @@ public class Play extends BasicGameState{
 									bcHealth[y] -=pdmg;
 									if(bcHealth[y] <=0){
 										bcArrayX[y] = playRightX+2500;
-										coins +=5;
-										mana+=5;
+										coins +=5 + goldIncome*2;
 										pCombat[x] = 0;
+										mana+=8;
 									}
 									}
 									}
@@ -3028,7 +3040,7 @@ public class Play extends BasicGameState{
 								}
 								for(int y = 0; y < 15; y++){
 									if(pArrayX[x] < playRightX +750){
-							if(pArrayX[x] > bpArrayX[y]-550 && pArrayX[x] < bpArrayX[y]-50 || pFlight[x] == 1){
+							if(pArrayX[x] > bpArrayX[y]-550 && pArrayX[x] < bpArrayX[y]-50 && bpHealth[y] > 0 || pFlight[x] == 1){
 								pCombat[x] = 1;
 								if(prArrayX[x] > bpArrayX[y]-65 && prArrayX[x] < bpArrayX[y]+25 && bpHealth[y] > 0){
 									if(prArrayY[x] < 300){
@@ -3038,8 +3050,10 @@ public class Play extends BasicGameState{
 									pStaticP[x] = 0;
 									bpHealth[y] -=pdmg;
 									if(bpHealth[y] <=0){
+										coins +=5 + goldIncome*2;
 										pCombat[x] = 0;
 										bpArrayX[y]= playLeftX + 250;
+										mana+=10;
 									}
 								}
 								}
@@ -3117,7 +3131,7 @@ public class Play extends BasicGameState{
 						///BAD PHOENIX STUFF/////
 						////////////////////////
 						
-						if(level >= 12){
+						if(level >= 16){
 						for(int x = 0; x < 15; x++){
 							if(bpHealth[x] >0){
 								if(bprArrayX[x] < playLeftX+350){
@@ -3130,9 +3144,9 @@ public class Play extends BasicGameState{
 								bpAlive[x] = 1;
 								for(int y = 0; y < 15; y++){
 									if(bpArrayX[x] > playLeftX +600){
-								if(bpArrayX[x] < wArrayX[y]+500 && bpArrayX[x] > wArrayX[y]-20 || bpFlight[x] == 1){
+								if(bpArrayX[x] < wArrayX[y]+500 && bpArrayX[x] > wArrayX[y]-20 && wHealth[y] > 0 || bpFlight[x] == 1){
 									bpCombat[x] = 1;
-									if(bprArrayX[x] < wArrayX[y]+25 && bprArrayX[x] > wArrayX[y]-25 && wHealth[y] > 0){
+									if(bprArrayX[x] < wArrayX[y]+25 && bprArrayX[x] > wArrayX[y]-25){
 										if(bprArrayY[x] > 500){
 										bprArrayX[x] = 2000;
 										bpFlight[x] = 0;
@@ -3140,7 +3154,7 @@ public class Play extends BasicGameState{
 									wHealth[y] -=bpdmg;
 									if(wHealth[y] <=0){
 										bpCombat[x] = 0;
-										wArrayX[y]= playLeftX +250;
+										wArrayX[y]= playLeftX -2500;
 									}
 										}
 									}
@@ -3151,9 +3165,9 @@ public class Play extends BasicGameState{
 								}
 								for(int y = 0; y < 15; y++){
 									if(bpArrayX[x] > playLeftX +600){
-							if(bpArrayX[x] < aArrayX[y]+500 && bpArrayX[x] > aArrayX[y]-20 || bpFlight[x] == 1){
+							if(bpArrayX[x] < aArrayX[y]+500 && bpArrayX[x] > aArrayX[y]-20 && aHealth[y] > 0 || bpFlight[x] == 1){
 								bpCombat[x] = 1;
-								if(bprArrayX[x] <aArrayX[y]+25 && bprArrayX[x] > aArrayX[y]-25 && aHealth[y] > 0){
+								if(bprArrayX[x] <aArrayX[y]+25 && bprArrayX[x] > aArrayX[y]-25){
 									if(bprArrayY[x] > 500){
 									bprArrayX[x] = 2000;
 									bpFlight[x] = 0;
@@ -3161,7 +3175,7 @@ public class Play extends BasicGameState{
 									aHealth[y] -=bpdmg;
 									if(aHealth[y] <=0){
 										bpCombat[x] = 0;
-										aArrayX[y]= playLeftX + 250;
+										aArrayX[y]= playLeftX - 2500;
 									}
 								}
 									}
@@ -3170,9 +3184,9 @@ public class Play extends BasicGameState{
 								}
 								for(int y = 0; y < 15; y++){
 									if(bpArrayX[x] > playLeftX +600){
-								if(bpArrayX[x] < gArrayX[y]+500 && bpArrayX[x] > gArrayX[y]-20 || bpFlight[x] == 1){
+								if(bpArrayX[x] < gArrayX[y]+500 && bpArrayX[x] > gArrayX[y]-20 && gHealth[y] > 0 || bpFlight[x] == 1){
 									bpCombat[x] = 1;
-									if(bprArrayX[x] < gArrayX[y]+75 && bprArrayX[x] > gArrayX[y]-25 && gHealth[y] > 0){
+									if(bprArrayX[x] < gArrayX[y]+75 && bprArrayX[x] > gArrayX[y]-25){
 										if(bprArrayY[x] > 450){
 										bprArrayX[x] = 2000;
 										bpFlight[x] = 0;
@@ -3180,7 +3194,7 @@ public class Play extends BasicGameState{
 									gHealth[y] -=bpdmg;
 									if(gHealth[y] <=0){
 										bpCombat[x] = 0;
-										gArrayX[y]= playLeftX +250;
+										gArrayX[y]= playLeftX -2500;
 									}
 									}
 									}
@@ -3189,9 +3203,9 @@ public class Play extends BasicGameState{
 								}
 								for(int y = 0; y < 15; y++){
 									if(bpArrayX[x] > playLeftX +600){
-								if(bpArrayX[x] < cArrayX[y]+600 && bpArrayX[x] > cArrayX[y]-50 || bpFlight[x] == 1){
+								if(bpArrayX[x] < cArrayX[y]+600 && bpArrayX[x] > cArrayX[y]-50 && cHealth[y] > 0 || bpFlight[x] == 1){
 									bpCombat[x] = 1;
-									if(bprArrayX[x] < cArrayX[y]+300 && bprArrayX[x] > cArrayX[y]-25 && cHealth[y] > 0){
+									if(bprArrayX[x] < cArrayX[y]+300 && bprArrayX[x] > cArrayX[y]-25){
 										if(bprArrayY[x] > 500){
 										bprArrayX[x] = 2000;
 										bpFlight[x] = 0;
@@ -3199,7 +3213,7 @@ public class Play extends BasicGameState{
 									cHealth[y] -=bpdmg;
 									if(cHealth[y] <=0){
 										bpCombat[x] = 0;
-										cArrayX[y]= playLeftX +250;
+										cArrayX[y]= playLeftX -2500;
 									}
 									}
 									}
@@ -3208,9 +3222,9 @@ public class Play extends BasicGameState{
 								}
 								for(int y = 0; y < 15; y++){
 									if(bpArrayX[x] > playLeftX +600){
-							if(bpArrayX[x] < pArrayX[y]+560 && bpArrayX[x] > pArrayX[y]-50 || bpFlight[x] == 1){
+							if(bpArrayX[x] < pArrayX[y]+560 && bpArrayX[x] > pArrayX[y]-50 && pHealth[y] > 0 || bpFlight[x] == 1){
 								bpCombat[x] = 1;
-								if(bprArrayX[x] <pArrayX[y]+65 && bprArrayX[x] > pArrayX[y]-25 && pHealth[y] > 0){
+								if(bprArrayX[x] <pArrayX[y]+65 && bprArrayX[x] > pArrayX[y]-25){
 									if(bprArrayY[x] < 300){
 									bprArrayX[x] = 2000;
 									bpFlight[x] = 0;
@@ -3219,7 +3233,7 @@ public class Play extends BasicGameState{
 									pHealth[y] -=bpdmg;
 									if(pHealth[y] <=0){
 										bpCombat[x] = 0;
-										pArrayX[y]= playLeftX + 250;
+										pArrayX[y]= playLeftX - 2500;
 									}
 								}
 								}
@@ -3365,7 +3379,8 @@ public class Play extends BasicGameState{
 									BFlight[x] = 0;
 									if(bpHealth[y] <=0){									
 										bpArrayX[y] = playRightX+2500;
-										coins+=5;
+										coins +=5 + goldIncome*2;
+										mana+=2;
 									}
 								}
 								}
@@ -3379,7 +3394,8 @@ public class Play extends BasicGameState{
 									BFlight[x] = 0;
 									if(bcHealth[y] <=0){
 										bcArrayX[y] = playRightX+2500;
-										coins+=5;
+										coins +=5 + goldIncome*2;
+										mana+=4;
 									}
 								}
 								}
@@ -3393,7 +3409,8 @@ public class Play extends BasicGameState{
 									BFlight[x] = 0;
 									if(badgHealth[y] <=0){
 										badgArrayX[y] = playRightX+2500;
-										coins+=5;
+										coins +=5 + goldIncome*2;
+										mana+=6;
 									}
 								}
 								}
@@ -3401,13 +3418,14 @@ public class Play extends BasicGameState{
 								}
 								for(int y = 0; y < 15; y++){
 									if(goodbowammoX[x] < playRightX +750){
-								if(goodbowammoX[x] > baArrayX[y]-5 && goodbowammoX[x] < baArrayX[y]+50 && baHealth[y] > 0){
+								if(goodbowammoX[x] > baArrayX[y]-5 && goodbowammoX[x] < baArrayX[y]+55 && baHealth[y] > 0){
 									if(goodbowammoY[x] > 520){
 									baHealth[y] -=tbdmg + bowDamageLevel*5;
 									BFlight[x] = 0;
 									if(baHealth[y] <=0){
 										baArrayX[y] = playRightX+2500;
-										coins+=5;
+										coins +=5 + goldIncome*2;
+										mana+=8;
 									}
 								}
 								}
@@ -3415,13 +3433,14 @@ public class Play extends BasicGameState{
 								}
 								for(int y = 0; y < 15; y++){
 									if(goodbowammoX[x] < playRightX +750){
-								if(goodbowammoX[x] > badwArrayX[y]-5 && goodbowammoX[x] < badwArrayX[y]+50 && badwHealth[y] > 0){
+								if(goodbowammoX[x] > badwArrayX[y]-5 && goodbowammoX[x] < badwArrayX[y]+55 && badwHealth[y] > 0){
 									if(goodbowammoY[x] > 520){
 									badwHealth[y] -=tbdmg + bowDamageLevel*5;
 									BFlight[x] = 0;
 									if(badwHealth[y] <=0){
 										badwArrayX[y] = playRightX+2500;
-										coins+=5;
+										coins +=5 + goldIncome*2;
+										mana+=10;
 									}
 								}
 								}
@@ -3527,12 +3546,26 @@ public class Play extends BasicGameState{
 						g.fillRect(190, 616, 60, acdr*60/aMaxCdr);
 						g.fillRect(280, 616, 60, gcdr*60/gMaxCdr);
 						g.fillRect(370, 616, 60, ccdr*60/cMaxCdr);
-						g.fillRect(460, 616, 60, pcdr*60/wMaxCdr);
+						g.fillRect(460, 616, 60, pcdr*60/pMaxCdr);
+						
 						//COINS VALUE
 						fUnicodeFont.drawString(655,10,"Coins : " + coins,Color.yellow);
 						
 						//MANA VALUE
-						fUnicodeFont.drawString(495,10,"Mana : " + mana,Color.blue);
+						fUnicodeFont.drawString(495,10,"Mana : " + mana + "/" + maxMana,Color.blue);
+						
+						//cost values
+						g.setColor(Color.blue);
+						//warrior mana cost
+						g.drawString("10", 100,600);
+						//archer mana cost
+						g.drawString("20", 190,600);
+						//golem mana cost
+						g.drawString("30", 280,600);
+						//catapult mana cost
+						g.drawString("40", 370,600);
+						//phoenix mana cost
+						g.drawString("50", 460,600);
 						
 						//IF GAME IS PAUSED
 								}else{
@@ -3727,11 +3760,15 @@ public class Play extends BasicGameState{
 			
 			
 			//MANA TIMER
-			if(manaTimer < 30){
+			if(manaTimer < 30 - manaIncome*2.5){
 				manaTimer++;
 			}else{
+				if(mana < maxMana){ 
 				manaTimer = 0;
 				mana++;
+				}else{
+					mana = maxMana;
+				}
 			}
 			
 			//RESIZING GAME
@@ -3752,16 +3789,17 @@ public class Play extends BasicGameState{
 				if(mouseY >616 && mouseY < 676){
 					if(input.isMouseButtonDown(0)){
 						//CATAPULT MOUSE AND KEY INPUT
-					if(mana >= 10 && ccdr == 0){
+					if(mana >= 40 && ccdr == 0){
 						int vvv = 0;
 					for(int x = 0; x < 15; x++){
 						if(cHealth[x] <= 0 && vvv == 0){
+							cArrayX[x] = playLeftX+250;
 							cHealth[x] = cMaxHealth;
 							cAlive[x] = 0;
 							cCombatAnimation[x] = 0;
 							catapultFlight[x] = 0;
-							mana-=10;
-							ccdr = cMaxCdr;
+							mana-=40;
+							ccdr = cMaxCdr - unitCdr;
 							vvv = 1;
 						}
 					}
@@ -3770,16 +3808,17 @@ public class Play extends BasicGameState{
 				}
 				}else{
 					if(input.isKeyDown(Input.KEY_4) && ccdr == 0){
-						if(mana >= 10 && ccdr == 0){
+						if(mana >= 40 && ccdr == 0){
 							int vvv = 0;
 						for(int x = 0; x < 15; x++){
 							if(cHealth[x] <= 0 && vvv == 0){
+								cArrayX[x] = playLeftX+250;
 								cHealth[x] = cMaxHealth;
 								cAlive[x] = 0;
 								cCombatAnimation[x] = 0;
 								catapultFlight[x] = 0;
-								mana-=10;
-								ccdr = cMaxCdr;
+								mana-=40;
+								ccdr = cMaxCdr - unitCdr;
 								vvv = 1;
 							}
 						}
@@ -3792,14 +3831,15 @@ public class Play extends BasicGameState{
 			if(mouseX >= 280 && mouseX <= 340){
 				if(mouseY >616 && mouseY < 676){
 					if(input.isMouseButtonDown(0)){
-					if(mana >= 5 && gcdr == 0){
+					if(mana >= 30 && gcdr == 0){
 						int vvv = 0;
 						for(int x = 0; x < 15; x++){
 							if(gHealth[x] <= 0 && vvv == 0){
+								gArrayX[x] = playLeftX+250;
 								gHealth[x] = gMaxHealth;
 								gCombat[x] = 0;
-								mana-=5;
-								gcdr = gMaxCdr;
+								mana-=30;
+								gcdr = gMaxCdr - unitCdr;
 								vvv = 1;
 							}
 						}
@@ -3808,14 +3848,15 @@ public class Play extends BasicGameState{
 				}
 				}else{
 					if(input.isKeyDown(Input.KEY_3)){
-						if(mana >= 5 && gcdr == 0){
+						if(mana >= 30 && gcdr == 0){
 							int vvv = 0;
 							for(int x = 0; x < 15; x++){
 								if(gHealth[x] <= 0 && vvv == 0){
+									gArrayX[x] = playLeftX+250;
 									gHealth[x] = gMaxHealth;
 									gCombat[x] = 0;
-									mana-=5;
-									gcdr = gMaxCdr;
+									mana-=30;
+									gcdr = gMaxCdr - unitCdr;
 									vvv = 1;
 								}
 							}
@@ -3831,10 +3872,11 @@ public class Play extends BasicGameState{
 						int vvv = 0;
 						for(int x = 0; x < 15; x++){
 							if(wHealth[x] <= 0 && vvv == 0){
+								wArrayX[x] = playLeftX+250;
 								wHealth[x] = wMaxHealth;
 								wCombat[x] = 0;
 								mana-=10;
-								wcdr = wMaxCdr;
+								wcdr = wMaxCdr - unitCdr;
 								vvv = 1;
 							}
 						}
@@ -3847,10 +3889,11 @@ public class Play extends BasicGameState{
 						int vvv = 0;
 						for(int x = 0; x < 15; x++){
 							if(wHealth[x] <= 0 && vvv == 0){
+								wArrayX[x] = playLeftX+250;
 								wHealth[x] = wMaxHealth;
 								wCombat[x] = 0;
 								mana-=10;
-								wcdr = wMaxCdr;
+								wcdr = wMaxCdr - unitCdr;
 								vvv = 1;
 							}
 						}
@@ -3861,18 +3904,19 @@ public class Play extends BasicGameState{
 			// ARCHER MOUSE AND KEY INPUT
 			if(mouseX >= 190 && mouseX <= 250){
 				if(mouseY >616 && mouseY < 676){
-					if(mana >= 10 && acdr == 0){
+					if(mana >= 20 && acdr == 0){
 						int vvv = 0;
 						for(int x = 0; x < 15; x++){
 							if(aHealth[x] <= 0 && vvv == 0){
+								aArrayX[x] = playLeftX+250;
 								aHealth[x] = aMaxHealth;
 								aCombat[x] = 0;
 								aAlive[x] = 0;
 								aCombat[x] = 0;
 								aCombatAnimation[x] = 0;
 								arrowFlight[x] = 0;
-								mana-=10;
-								acdr = aMaxCdr;
+								mana-=20;
+								acdr = aMaxCdr - unitCdr;
 								aStaticP[x] = 0;
 								vvv = 1;
 							}
@@ -3881,18 +3925,19 @@ public class Play extends BasicGameState{
 				}
 				}else{
 					if(input.isKeyDown(Input.KEY_2)){
-						if(mana >= 10 && acdr == 0){
+						if(mana >= 20 && acdr == 0){
 							int vvv = 0;
 							for(int x = 0; x < 15; x++){
 								if(aHealth[x] <= 0 && vvv == 0){
+									aArrayX[x] = playLeftX+250;
 									aHealth[x] = aMaxHealth;
 									aCombat[x] = 0;
 									aAlive[x] = 0;
 									aCombat[x] = 0;
 									aCombatAnimation[x] = 0;
 									arrowFlight[x] = 0;
-									mana-=10;
-									acdr = aMaxCdr;
+									mana-=20;
+									acdr = aMaxCdr - unitCdr;
 									aStaticP[x] = 0;
 									vvv = 1;
 								}
@@ -3906,18 +3951,19 @@ public class Play extends BasicGameState{
 			if(mouseX >= 460 && mouseX < 520){
 				if(mouseY >616 && mouseY < 676){
 					if(input.isMouseButtonDown(0)){
-					if(mana >= 5 && pcdr == 0){
+					if(mana >= 50 && pcdr == 0){
 						int vvv = 0;
 						for(int x = 0; x < 15; x++){
 							if(pHealth[x] <= 0 && vvv == 0){
+								pArrayX[x] = playLeftX+250;
 								pHealth[x] = pMaxHealth;
 								pCombat[x] = 0;
 								pAlive[x] = 0;
 								pCombat[x] = 0;
 								pCombatAnimation[x] = 0;
 								pFlight[x] = 0;
-								mana-=10;
-								pcdr = pMaxCdr;
+								mana-=50;
+								pcdr = pMaxCdr - unitCdr;
 								pStaticP[x] = 0;
 								vvv = 1;
 							}
@@ -3927,18 +3973,19 @@ public class Play extends BasicGameState{
 				}
 			}else{
 				if(input.isKeyDown(Input.KEY_5)){
-					if(mana >= 10 && pcdr == 0){
+					if(mana >= 50 && pcdr == 0){
 						int vvv = 0;
 						for(int x = 0; x < 15; x++){
 							if(pHealth[x] <= 0 && vvv == 0){
+								pArrayX[x] = playLeftX+250;
 								pHealth[x] = pMaxHealth;
 								pCombat[x] = 0;
 								pAlive[x] = 0;
 								pCombat[x] = 0;
 								pCombatAnimation[x] = 0;
 								pFlight[x] = 0;
-								mana-=10;
-								pcdr = pMaxCdr;
+								mana-=50;
+								pcdr = pMaxCdr - unitCdr;
 								pStaticP[x] = 0;
 								vvv = 1;
 							}
@@ -3948,9 +3995,14 @@ public class Play extends BasicGameState{
 			}
 			}
 
-			//CHANGING TO STAGE 3
+			//CHANGING TO STATE 2
 			if(badTowerHealth <= 0){
 				Shop.setVariablesV = true;
+				if(level < 10){
+				coins +=30*(level/2) + goldIncome*2;
+				}else{
+				coins +=50*(level/4) + goldIncome*2;
+				}
 				sbg.enterState(2);
 			}
 			
@@ -4053,35 +4105,31 @@ public class Play extends BasicGameState{
 					badwdmg +=.005;
 					badwMaxHealth +=10;
 					badwMaxcdr -=5;
-					badwSpeed +=.025;
-				}
-				
-				if(level >= 3){
-				badmg +=3;
-				baMaxHealth +=10;
-				baMaxcdr -=5;
-				baSpeed +=.2;
 				}
 				
 				if(level >= 5){
+				badmg +=3;
+				baMaxHealth +=10;
+				baMaxcdr -=5;
+				}
+				
+				if(level >= 8){
 				badgdmg +=.02;
 				badgMaxHealth +=10;
 				badgMaxcdr -=3;
-				badgSpeed +=.2;
 				}
 				
-				if(level >= 9){
+				if(level >= 12){
 				bcdmg +=1;
 				bcMaxHealth +=10;
 				bcMaxcdr -=3;
 				bcSpeed +=.2;
 				}
 				
-				if(level >= 12){
+				if(level >= 16){
 				bpdmg +=1;
 				bpMaxHealth +=10;
 				bpMaxCdr -=3;
-				bpSpeed +=.2;
 				}
 				
 				playState = false;
@@ -4105,6 +4153,18 @@ public class Play extends BasicGameState{
 			customSpawnType = 0;
 			customSpawnCounter = 2;
 			customSpawnDelay = 100;
+			}else if(level == 2){
+			customSpawnType = 0;
+			customSpawnCounter = 3;
+			customSpawnDelay = 150;	
+			}else if(level == 3){
+			customSpawnType = 0;
+			customSpawnCounter = 4;
+			customSpawnDelay = 100;				
+			}else if(level == 4){
+			customSpawnType = 0;
+			customSpawnCounter = 4;
+			customSpawnDelay = 75;				
 			}else{
 			customSpawnType = 0;
 			customSpawnCounter = 3;

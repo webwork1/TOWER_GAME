@@ -51,7 +51,7 @@ public class Menu extends BasicGameState{
 		if(mouseX >= begin.toPixelsX(88) && mouseX <= begin.toPixelsX(110)){
 			if(mouseY >= begin.toPixelsY(66) && mouseY <= begin.toPixelsY(88)){
 				if(input.isMouseButtonDown(0)){
-				sbg.enterState(2);
+				sbg.enterState(1);
 				}
 			}
 		}
